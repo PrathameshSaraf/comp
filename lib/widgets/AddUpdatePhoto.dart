@@ -24,6 +24,7 @@ class _AddUpdatePhotoState extends State<AddUpdatePhoto> {
   final _productDescriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final ImagePicker imgpicker = ImagePicker();
+  String dropdownValue='Male';
   List<XFile>? imagefiles;
   final ImagePicker _picker = ImagePicker();
   File? image;
@@ -357,6 +358,44 @@ class _AddUpdatePhotoState extends State<AddUpdatePhoto> {
                       SizedBox(
                         height: 20,
                       ),
+                      Align(
+                        child: Text("Add Photo Gender",
+                            style:
+                            TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                        alignment: Alignment.centerLeft,
+                      ),
+
+                      DropdownButtonFormField(
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            //<-- SEE HERE
+                            borderSide: BorderSide(color: Colors.black, width: 2),
+                          ),
+                          filled: true,
+                          //fillColor: Colors.greenAccent,
+                        ),
+                        // dropdownColor: Colors.greenAccent,
+                        value: dropdownValue,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                        items: <String>['Male', 'Female']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+      SizedBox(height: 20,),
 
       Column(
           crossAxisAlignment: CrossAxisAlignment.start,

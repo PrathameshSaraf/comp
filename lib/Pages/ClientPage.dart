@@ -1,7 +1,8 @@
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
+import '../Admin/Dashbord.dart';
 import '../Models/Clients.dart';
 import '../Models/Database.dart';
 import '../screen/Signup.dart';
@@ -19,7 +20,7 @@ class _ClientPageState extends State<ClientPage> {
   TextEditingController controller = TextEditingController();
 
   final db = DatabaseServices();
-  final _db=FirebaseFirestore.instance;
+
   List<String> IDS = [];
   bool _isloading=true;
   int i=0;
@@ -44,36 +45,48 @@ class _ClientPageState extends State<ClientPage> {
   }
 
   getg() async{
-  FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
-  type: FileType.custom,
-  allowedExtensions: ['xlsx'],
-  allowMultiple: false,
-  );
-  if (pickedFile != null) {
-    var bytes = pickedFile.files.single.bytes;
-    var excel = Excel.decodeBytes(bytes!);
 
-    final sheet = excel.tables.values.first;
-    final headers = sheet.rows.first.map((cell) => cell!.value).toList();
-    print(headers);
-    final data = sheet.rows.skip(1).map((row) {
-      final values = row.map((cell) => cell!.value).toList();
-      return Map.fromIterables(headers, values);
-    }).toList();
-    var value = FirebaseDatabase.instance.reference();
-    var getValue = await value.child('Clients').once();
-    for (final row in data) {
+    FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['xlsx'],
+      allowMultiple: false,
+    );
+    if (pickedFile != null) {
+      var bytes = pickedFile.files.single.bytes;
+      var excel = Excel.decodeBytes(bytes!);
+      final sheet = excel.tables.values.first;
+      final headers = sheet.rows.first.map((cell) => cell!.value).toList();
+      print(headers);
+      final data = sheet.rows.skip(1).map((row) {
+        final values = row.map((cell) => cell!.value).toList();
+        return Map.fromIterables(headers, values);
+      }).toList();
+       data.map((e) => e.map((k, v) => MapEntry(k.toString(), v))).forEach((map)async {
+             String id=map['id'].toString();
+             String fname=map['fname'].toString();
+             String lname=map['lname'].toString();
+             String mobile=map['mobile'].toString();
+             String location=map['location'].toString();
+             String pass=map['pass'].toString();
+             String username=map['username'].toString();
+             String branch=map['branch'].toString();
+             String level=map['level'].toString();
+
+
+      await db.addClient(id, int.parse(mobile), fname, lname, pass, username, context, location, branch, level);
+
+       });
+
 
     }
-    // for (var table in excel.tables.keys) {
-    //   print(table); //sheet Name
-    //   print(excel.tables[table]!.maxCols);
-    //   print(excel.tables[table]!.maxRows);
-    //   for (var row in excel.tables[table]!.rows) {
-    //     print("$row");
-    //   }
-    // }
-  }}
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>Dashbord(val: 3,)
+        ));
+      }
+
+
   @override
   void initState() {
     getProducts();

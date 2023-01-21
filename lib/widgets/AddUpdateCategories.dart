@@ -1,11 +1,13 @@
 
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:comp/Admin/Dashbord.dart';
 import 'package:comp/widgets/Button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../Models/AllMethods.dart';
 import '../Models/Database.dart';
 import '../Models/StorageServices.dart';
 
@@ -17,12 +19,12 @@ class AddEditCategoryScreen extends StatefulWidget {
 
 class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
   final _AddController = TextEditingController();
-  String dropdownValue = 'Gender';
+  String dropdownValue = 'Male';
   final _productTitleController = TextEditingController();
   final _productPriceController = TextEditingController();
   final _productDescriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  final am=allMethods();
   final ImagePicker _picker = ImagePicker();
   File? image;
   bool isRecommended = false;
@@ -30,11 +32,7 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
   bool isTopSelling = false;
   bool isNonVeg = false;
   bool _isLoading = true;
-  var items = [
-    'Gender'
-    'Male',
-    'Female',
-  ];
+
   final Storage storage=Storage();
   final db =DatabaseServices();
   bool isWeb = false;
@@ -135,7 +133,7 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
     if (isWeb) {
       //hide the page
       // widget.addEditCategory!(null, true);
-      //Navigator.pop(context);
+      Navigator.pop(context);
     } else {
       Navigator.pop(context);
     }
@@ -347,6 +345,7 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
                 child: Column(
                   children: [
                     TextFormField(
+
                       validator: (v) {
                         return v == null
                             ? "Required field"
@@ -358,11 +357,16 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
                       decoration: const InputDecoration(
                         labelText: "Category Title",
                       ),
+                      toolbarOptions:
+                      ToolbarOptions(paste: true, cut: true, selectAll: true, copy: true),
+
                     ),
                     SizedBox(
                       height: 30,
                     ),Align(
                       child: Text("Category Description",
+
+
                           style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                       alignment: Alignment.centerLeft,
@@ -370,6 +374,8 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
 
                     TextFormField(
                       keyboardType: TextInputType.multiline,
+                      toolbarOptions:
+                      ToolbarOptions(paste: true, cut: true, selectAll: true, copy: true),
                       minLines: 3,//Normal textInputField will be displayed
                       maxLines:null,
                       controller: _AddController,
@@ -391,6 +397,13 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
                     SizedBox(
                       height: 20,
                     ),
+                    Align(
+                      child: Text("Select Gender ",
+                          style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                      alignment: Alignment.centerLeft,
+                    ),
+
                     DropdownButtonFormField(
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
@@ -410,7 +423,7 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
                           dropdownValue = newValue!;
                         });
                       },
-                      items: <String>['Gender','Male', 'Female']
+                      items: <String>['Male', 'Female']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -472,11 +485,11 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
               ),
                     ButtonW100(text: "Add", onTap: (){
                       List<String> Categori=[_productPriceController.text,];
-                      for(var i = 0; i< _controllers.length; i++) {
+
                        _controllers.forEach((element) {
                          Categori.add(element.text);
                        });
-                      }
+
 
 
                       db.addCategory('', _productTitleController.text, Categori, '', context,dropdownValue,_AddController.text).then((value) =>
@@ -485,7 +498,9 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
                             setState(() {
                               uploadPercentage = progress.toStringAsFixed(2);
                             });
-                          }, closePage));
+                          },
+                              closePage));
+                      am.fetchData(context, Dashbord(val: 5));
                     }),
             ],
           ),

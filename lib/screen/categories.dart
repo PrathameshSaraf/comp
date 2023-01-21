@@ -105,7 +105,7 @@ getProducts() async {
                               MaterialPageRoute(
                               builder: (context) =>ProductScreen(Gender: widget.data)
                               ))
-                              }, title:products.elementAt(index)['title'], ImageUrl:products.elementAt(index)['ImagePath'] ),
+                              }, title:products.elementAt(index)['title'], ImageUrl:products.elementAt(index)['ImagePath'],Gender:products.elementAt(index)['Gender'], ),
 
                           ); }),
                     // Category(onTap: ()=>{
@@ -140,7 +140,6 @@ getProducts() async {
                                   Positioned(
                                     child:Image.asset(
                                       "assets/images/beep.png",
-
                                       fit: BoxFit.cover,
                                     ),
                                   ),

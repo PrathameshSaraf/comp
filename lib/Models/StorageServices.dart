@@ -13,12 +13,17 @@ import 'package:firebase_core/firebase_core.dart' as firebase_core;
 class Storage {
   final db = DatabaseServices();
 
+
   List<String> listUrls = [];
   final firebase_storage.FirebaseStorage storage = firebase_storage
       .FirebaseStorage.instance;
   firebase_storage.Reference? ref;
   double val = 0;
 
+  Future<void> deletePhoto(String photoId, String folder) async {
+    final storageReference = storage.ref().child('$folder/$photoId');
+    await storageReference.delete();
+  }
 //========================================Customer=============================================================
   Future<void> uploadFile(File file, String fileName, String id) async {
     try {

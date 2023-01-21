@@ -56,8 +56,47 @@ class _ProductState extends State<Product> {
               ),
               itemBuilder: (BuildContext context, int index){
                  if(products != null && products.length > index){
-                 return widget.value==false?Image.network( products.elementAt(index!)['imageUrl'],height: 10.0,width: 10,fit: BoxFit.cover,):InkWell(
-                     onTap: (){},
+                 return InkWell(
+                     onTap: (){
+                       Navigator.push(
+                           context,
+                           MaterialPageRoute(
+                           builder: (context) =>Container(
+                            // color: Colors.white,
+                             child: SingleChildScrollView(
+                               child: Container(
+                                 //color: Colors.white,
+                                 child: Padding(
+                                   padding: const EdgeInsets.all(15.0),
+                                   child: Column(
+                                     children: <Widget>[
+                                       SizedBox(height: 100,),
+                                       Image.asset("assets/images/beep.png"),
+                                       Row(
+                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                         children: <Widget>[
+                                          ElevatedButton(
+                                             child: Text('Button 1'),
+                                             onPressed: () {
+                                               // button 1 action
+                                             },
+                                           ),
+                                           ElevatedButton(
+                                             child: Text('Button 2'),
+                                             onPressed: () {
+                                               // button 2 action
+                                             },
+                                           ),
+                                         ],
+                                       ),
+                                     ],
+                                   ),
+                                 ),
+                               ),
+                             ),
+                           ),
+                           ));
+                     },
                      child: ClipRRect(
                        borderRadius: BorderRadius.circular(16.0),
                        child:Stack(

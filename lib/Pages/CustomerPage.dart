@@ -112,17 +112,37 @@ class _CustomerPageState extends State<CustomerPage> {
                           child: Align(
                             alignment: Alignment.topRight,
                             child: Container(
-                              child: ClipOval(
-                                child: Material(
-                                  color: Colors.orange, // Button color
-                                  child: InkWell(
-                                    splashColor: Colors.red, // Splash color
-                                    onTap: () {
+                              color: Colors.white,
+                              width: 210,
+                              child: Row(
+                                children: [
+                                  ClipOval(
+                                    child: Material(
+                                      color: Colors.orange, // Button color
+                                      child: InkWell(
+                                        splashColor: Colors.red, // Splash color
+                                        onTap: () {
 
-                                    },
-                                    child: SizedBox(width: 56, height: 56, child: Icon(Icons.filter_alt_sharp)),
+                                        },
+                                        child: SizedBox(width: 56, height: 56, child: Icon(Icons.filter_alt_sharp)),
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                 SizedBox(width:20),
+                                  ClipOval(
+                                    child: Material(
+                                      color: Colors.orange, // Button color
+                                      child: InkWell(
+                                        splashColor: Colors.red, // Splash color
+                                        onTap: () {
+
+
+                                        },
+                                        child: SizedBox(width: 56, height: 56, child: Icon(Icons.delete)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -167,12 +187,13 @@ class _CustomerPageState extends State<CustomerPage> {
           child: SizedBox(
             width: double.infinity,
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.vertical,
               child: Column(
                 children: <Widget>[
 
               SingleChildScrollView(
-              scrollDirection: Axis.vertical,
+                scrollDirection: Axis.horizontal,
+
                 child: DataTable(
                   sortAscending: sort,
                   sortColumnIndex: 1,
@@ -244,6 +265,13 @@ class _CustomerPageState extends State<CustomerPage> {
                             fontWeight: FontWeight.w600, fontSize: 14),
                       ),
                     ),
+                    const DataColumn(
+                      label: Text(
+                        "View",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 14),
+                      ),
+                    ),
                   ],
                   rows: filterData!
                       .map(
@@ -275,6 +303,56 @@ class _CustomerPageState extends State<CustomerPage> {
                         DataCell(Text(product.Gender)),
                         DataCell(Icon(Icons.edit)),
                         DataCell(IconButton(icon:Icon(Icons.delete), onPressed: () {  },)),
+                        DataCell(IconButton(icon:Icon(Icons.remove_red_eye,color: Colors.blue,), onPressed: () {
+                          showDialog(
+                            context: context,
+
+                            builder: (ctx) => AlertDialog(
+
+                              title: const Text("Browse Data"),
+                              content: Container(
+                                 child: Stack(
+                                   children: [
+                                     Container(
+
+                                       decoration: BoxDecoration(
+                                         color: Colors.orange[50],
+                                         borderRadius: BorderRadius.circular(10),
+                                       ),
+                                       child: Column(
+                                         children: [
+                                           Text("Name: Saraf dd", style: TextStyle(color: Colors.orange[800], fontWeight: FontWeight.bold)),
+                                           Text("Gender: Male", style: TextStyle(color: Colors.orange[800], fontWeight: FontWeight.bold)),
+                                           Text("Mobile: 8564789", style: TextStyle(color: Colors.orange[800], fontWeight: FontWeight.bold)),
+                                         ],
+                                       ),
+                                     ),
+                                      Flexible(
+                                       child: ListView.builder(
+                                         itemCount: 4,
+                                          itemBuilder: (context, index) {
+                                     //       //final record = historyRecords[index];
+                                           return Container(
+                                     //         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                     //         decoration: BoxDecoration(
+                                     //           color: Colors.orange[100],
+                                     //           borderRadius: BorderRadius.circular(10),
+                                     //         ),
+                                     //         child: ListTile(
+                                     //           title: Text("10-20-2022", style: TextStyle(color: Colors.orange[800], fontWeight: FontWeight.bold)),
+                                     //           subtitle: Text("asdfghjmn b yjhnbv  bghn bvfghtnb cfthgb cretgbv cfrtgbv vcftgbv vcfrtgbv vftgb vfthgb vftrgb vfrthgb cfrtrghb cfrtgb v", style: TextStyle(color: Colors.orange[800], fontWeight: FontWeight.bold)),
+                                     //         ),
+                                          );
+                                         },
+                                       ),
+                                      ),
+                                   ],
+                                 ),
+                                ),
+                              ),
+
+                          );
+                          },)),
                       ],
                     ),
                   ).toList(),

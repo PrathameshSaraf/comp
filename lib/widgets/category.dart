@@ -3,19 +3,20 @@
 import 'package:flutter/material.dart';
 
 class Category extends StatelessWidget {
-  final String title;
+  final String title,Gender;
   final String ImageUrl;
   final void Function() onTap;
+
 
   Category({
    required this.onTap,
    required this.title,
-   required this.ImageUrl,
-
+   required this.ImageUrl,required this.Gender,
 });
 
   @override
   Widget build(BuildContext context) {
+    print(Gender);
     return Container(
       padding: EdgeInsets.all(10),
       child: InkWell(
@@ -34,24 +35,20 @@ class Category extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    bottom: 0,
-                    left: 0,
+                    bottom: 10,
+                    left: 13,
                     right: 0,
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        color: Colors.black45,
-                      ),
-                      child: Text(
-                        title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                    ),
+                    child: Row(
+                      children: [
+                        Text(title,style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.black
+                        ),),
+                        SizedBox(width: 10,),
+                        Gender=='Male'?Icon(Icons.man):Gender=="Female"? Icon(Icons.woman_sharp):Icon(Icons.people)
+                      ],
+                    )
                   ),
                 ]),)
       ),

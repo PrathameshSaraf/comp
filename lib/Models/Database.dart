@@ -175,7 +175,7 @@ class DatabaseServices {
           dataList.add(doc.data());
         }),
       });
-
+      print(dataList);
       return dataList;
 
     } catch (e) {
@@ -200,6 +200,7 @@ class DatabaseServices {
         branch: branch
 
     );
+
     try {
       DocumentReference ref = await _db
           .collection("Clients")
@@ -239,7 +240,7 @@ class DatabaseServices {
 
         ));
       } catch (e) {
-        print(e);
+        print("hello $e");
       }
     }
 
@@ -339,7 +340,7 @@ class DatabaseServices {
           dataList.add(doc.data());
         }),
       });
-
+print(dataList);
       return dataList;
 
     } catch (e) {

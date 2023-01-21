@@ -34,7 +34,8 @@ class _locationPageState extends State<locationPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    double width = MediaQuery.of(context).size.width;
+  //  print(width);
     return Expanded(
       // Expanded_A
         child: Container(
@@ -153,7 +154,8 @@ class _locationPageState extends State<locationPage> {
                                             itemCount: products.length,
                                             gridDelegate:
                                             SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 4,
+                                                crossAxisCount: width>1328?4:width>800?3:2,
+
                                                 crossAxisSpacing: 12.0,
                                                 mainAxisSpacing: 10.0),
                                             itemBuilder:

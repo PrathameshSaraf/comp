@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../Admin/Dashbord.dart';
 class allMethods{
 
-
   void fetchData(BuildContext context,Widget Nav) async {
     // show the loading dialog
     showDialog(
@@ -38,5 +37,4 @@ class allMethods{
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => Nav));
   }
-
 }

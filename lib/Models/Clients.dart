@@ -15,7 +15,10 @@ class Client{
       "lname":lname,
       "Password":pass,
       "Username":username,
-      "mobile":mobile
+      "mobile":mobile,
+      "level":level,
+      "location":location,
+      "branch":branch,
     };
   }
 
