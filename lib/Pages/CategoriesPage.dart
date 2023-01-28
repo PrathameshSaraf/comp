@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../Models/Categories.dart';
 import '../Models/Database.dart';
 import '../widgets/AddUpdateCategories.dart';
 import 'ClientPage.dart';
@@ -119,7 +120,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                                     ),
                                                   ),
                                                 ),
-                                                AddEditCategoryScreen(),
+                                                AddEditCategoryScreen(product:[],index:9,),
                                               ],
                                             ));
                                       },
@@ -187,7 +188,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
                                       return InkWell(
                                           onTap: () {},
-                                          child: CategoryWidgets(index:index ,ImagePath:products.elementAt(index).ImagePath,title:products.elementAt(index).title,Gender:products.elementAt(index).Gender ,));
+                                          child: CategoryWidgets(id:products.elementAt(index).id,index:index ,ImagePath:products.elementAt(index).ImagePath,title:products.elementAt(index).title,Gender:products.elementAt(index).Gender ,product:products,));
                                     }),
                               ]))))))
     ])));
@@ -196,9 +197,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
 class CategoryWidgets extends StatelessWidget {
   //const CategoryWidgets({Key? key}) : super(key: key);
-  String title,ImagePath,Gender;int index;
+  String title,ImagePath,Gender,id;int index;
+  List<dynamic>product;
 
-  CategoryWidgets({required this.index,required this.ImagePath,required this.title,required this.Gender});
+  CategoryWidgets({required this.index,required this.ImagePath,required this.title,required this.Gender,required this.id,required this.product});
 
 
   @override
@@ -244,7 +246,34 @@ class CategoryWidgets extends StatelessWidget {
                      color: Colors.black
                    ),),
                    SizedBox(width: 10,),
-                   Gender=='Male'?Icon(Icons.man):Gender=="Female"? Icon(Icons.woman_sharp):Icon(Icons.people)
+                   Gender=='Male'?Icon(Icons.man):Gender=="Female"? Icon(Icons.woman_sharp):Icon(Icons.people),
+                   IconButton(onPressed: (){
+                     showDialog(
+                       context: context,
+                       builder: (BuildContext context) {
+                         return AlertDialog(
+                             content: Stack(
+
+                               children: <Widget>[
+                                 Positioned(
+                                   right: -40.0,
+                                   top: -40.0,
+                                   child: InkResponse(
+                                     onTap: () {
+                                       Navigator.of(context).pop();
+                                     },
+                                     child: CircleAvatar(
+                                       child: Icon(Icons.close),
+                                       backgroundColor: Colors.red,
+                                     ),
+                                   ),
+                                 ),
+                                 AddEditCategoryScreen(product: product,index:index),
+                               ],
+                             ));
+                       },
+                     );
+                   }, icon:Icon(Icons.edit)),
     ],
     )
 

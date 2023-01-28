@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'Categories.dart';
 import 'Clients.dart';
 import 'Photos.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'customer.dart';
 
 class DatabaseServices {
@@ -15,8 +16,7 @@ class DatabaseServices {
 
 //=================================Customer===============================================================
   Future<String> addCostomer(String id, String fName, String lName,
-      String Gender, String phno,
-      String image, BuildContext context) async {
+      String Gender, String phno, String image, BuildContext context) async {
     final categoryData = Customer(
         id: id,
         fname: fName,
@@ -40,6 +40,39 @@ class DatabaseServices {
           .showSnackBar(SnackBar(content: Text("Unable to update data $e")));
       return "";
     }
+  }
+
+  Future<void> addDataForCustomerByMobileNumber(String mobileNumber, Map<String, dynamic> data) async {
+    try {
+      print(DateTime.now().day.toString());
+     await _db.collection("custmer").doc(mobileNumber).collection(mobileNumber).add(data);
+    }catch(e){
+      print(e);
+    }
+    }
+
+  Future<List> getDataFromMobile(String mobileNumber) async {
+    print(mobileNumber);
+    List dataList = [];
+
+    QuerySnapshot snapshots =await _db
+        .collection('custmer')
+        .where('phno', isEqualTo: mobileNumber)
+        .get();
+
+    for (QueryDocumentSnapshot snap in snapshots.docs) {
+      dataList.add(Customer(
+        Gender: snap["Gender"],
+        ImagePath: snap["ImagePath"],
+        fname: snap["fname"],
+        lname: snap["lname"],
+        id: snap['id'],
+        phno: snap['phno'],
+        lastVi: snap['lastVi'].toDate(),
+      ));
+    }
+    print(dataList);
+    return dataList;
   }
 
   UpdateCostomer(String id, String Name, String Gender, String phno,
@@ -101,12 +134,11 @@ class DatabaseServices {
       await FirebaseFirestore.instance
           .collection('custmer')
           .get()
-          .then((QuerySnapshot querySnapshot) =>
-      {
-        querySnapshot.docs.forEach((doc) {
-          dataList.add(doc.data());
-        }),
-      });
+          .then((QuerySnapshot querySnapshot) => {
+                querySnapshot.docs.forEach((doc) {
+                  dataList.add(doc.data());
+                }),
+              });
 
       return dataList;
     } catch (e) {
@@ -118,7 +150,7 @@ class DatabaseServices {
   Future<List<Customer>> getCustomerData() async {
     List<Customer> dataList = [];
     QuerySnapshot snapshots =
-    await _db.collection("custmer").get().catchError((e) {
+        await _db.collection("custmer").get().catchError((e) {
       print("Error :- $e");
     });
     for (QueryDocumentSnapshot snap in snapshots.docs) {
@@ -163,21 +195,20 @@ class DatabaseServices {
   //   return categories;
   // }
 
-  Future<List> getMData( ) async {
+  Future<List> getMData() async {
     List dataList = [];
 
     try {
       await FirebaseFirestore.instance
-          .collection('Photos').get()
-          .then((QuerySnapshot querySnapshot) =>
-      {
-        querySnapshot.docs.forEach((doc) {
-          dataList.add(doc.data());
-        }),
-      });
+          .collection('Photos')
+          .get()
+          .then((QuerySnapshot querySnapshot) => {
+                querySnapshot.docs.forEach((doc) {
+                  dataList.add(doc.data());
+                }),
+              });
       print(dataList);
       return dataList;
-
     } catch (e) {
       print(e.toString());
       return [];
@@ -185,9 +216,17 @@ class DatabaseServices {
   }
 
 //===================================Clients=======================================
-  Future<String> addClient(String id, int mobile, String FName, String LName,
-      String pass, String username, BuildContext context, String location,
-      String branch, String level) async {
+  Future<String> addClient(
+      String id,
+      int mobile,
+      String FName,
+      String LName,
+      String pass,
+      String username,
+      BuildContext context,
+      String location,
+      String branch,
+      String level) async {
     final categoryData = Client(
         id: id,
         fname: FName,
@@ -197,9 +236,7 @@ class DatabaseServices {
         username: username,
         location: location,
         level: level,
-        branch: branch
-
-    );
+        branch: branch);
 
     try {
       DocumentReference ref = await _db
@@ -221,7 +258,7 @@ class DatabaseServices {
     List<Client> dataList = [];
 
     QuerySnapshot snapshots =
-    await _db.collection("Clients").get().catchError((e) {
+        await _db.collection("Clients").get().catchError((e) {
       print("Error1 :- $e");
     });
 
@@ -237,7 +274,6 @@ class DatabaseServices {
           level: snap['level'],
           location: snap['location'],
           branch: snap['branch'],
-
         ));
       } catch (e) {
         print("hello $e");
@@ -255,8 +291,13 @@ class DatabaseServices {
   }
 
   //====================================Categories=========================================
-  Future<String> addCategory(String id, String title, List<String> Categories,
-      String imagePath, BuildContext context, String Gender,
+  Future<String> addCategory(
+      String id,
+      String title,
+      List<String> Categories,
+      String imagePath,
+      BuildContext context,
+      String Gender,
       String Description) async {
     final categoryData = Categorie(
         id: id,
@@ -282,7 +323,6 @@ class DatabaseServices {
     }
   }
 
-
   Future<void> updateCatImage(String image, String id) {
     // print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     // print(id);
@@ -295,13 +335,12 @@ class DatabaseServices {
   Future<List<dynamic>> getCategoriesData(BuildContext context) async {
     List<dynamic> categoriesList = [];
     QuerySnapshot snapshots =
-    await _db.collection("Categories").get().catchError((e) {
+        await _db.collection("Categories").get().catchError((e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Error :- $e")));
     });
     for (QueryDocumentSnapshot snap in snapshots.docs) {
       categoriesList.add(Categorie(
-
         id: snap['id'],
         title: snap['title'],
         ImagePath: snap['ImagePath'],
@@ -314,35 +353,35 @@ class DatabaseServices {
     return categoriesList;
   }
 
-  Future<List<String>> getCategoriesValues()async{
+  Future<List<String>> getCategoriesValues() async {
     List<dynamic> categoriesvalue = [];
     List<String> output = [];
     await _db.collection("Categories").get().then((value) {
-
-      for(int i=0;i<value.docs.length;i++){
-      categoriesvalue.add((value.docs[i]["Categories"]));}
+      for (int i = 0; i < value.docs.length; i++) {
+        categoriesvalue.add((value.docs[i]["Categories"]));
+      }
     });
-    for(final d in categoriesvalue){
+    for (final d in categoriesvalue) {
       output.add(d[0]);
     }
-     return output;
+    return output;
   }
 
   Future<List> getCategoryGender(String Gender) async {
     List dataList = [];
 
     try {
-      await  _db.collection('Categories')
-          .where('Gender',  isNotEqualTo: Gender).get()
-          .then((QuerySnapshot querySnapshot) =>
-      {
-        querySnapshot.docs.forEach((doc) {
-          dataList.add(doc.data());
-        }),
-      });
-print(dataList);
+      await _db
+          .collection('Categories')
+          .where('Gender', isNotEqualTo: Gender)
+          .get()
+          .then((QuerySnapshot querySnapshot) => {
+                querySnapshot.docs.forEach((doc) {
+                  dataList.add(doc.data());
+                }),
+              });
+      print(dataList);
       return dataList;
-
     } catch (e) {
       print(e.toString());
       return [];
@@ -350,9 +389,15 @@ print(dataList);
   }
 //====================================Location===================================================
 
-  Future<String> addLocation(String id, String contact, String Name,
+  Future<String> addLocation(
+      String id,
+      String contact,
+      String Name,
       String location,
-      String branch, String city, String state, String Add,
+      String branch,
+      String city,
+      String state,
+      String Add,
       BuildContext context) async {
     final categoryData = Location(
       id: id,
@@ -385,7 +430,7 @@ print(dataList);
     List<Location> dataList = [];
 
     QuerySnapshot snapshots =
-    await _db.collection("location").get().catchError((e) {
+        await _db.collection("location").get().catchError((e) {
       print("Error1 :- $e");
     });
 
@@ -399,8 +444,7 @@ print(dataList);
             address: snap['address'],
             branch: snap['branch'],
             city: snap['city'],
-            state: snap['state']
-        ));
+            state: snap['state']));
       } catch (e) {
         print(e);
       }
@@ -408,13 +452,17 @@ print(dataList);
     return dataList;
   }
 
-
 //=====================================Photos=================================================
-  Future<String> addPhotos(String id, String name, List<String> Categories,
-      String Imagepath, BuildContext context, String summary,List<XFile> AdditionalPhotos,String LongDes1,
-       ) async {
-
-
+  Future<String> addPhotos(
+    String id,
+    String name,
+    List<String> Categories,
+    String Imagepath,
+    BuildContext context,
+    String summary,
+    List<XFile> AdditionalPhotos,
+    String LongDes1,
+  ) async {
     final categoryData = Photos(
       id: id,
       name: name,
@@ -422,7 +470,7 @@ print(dataList);
       Imagepath: Imagepath,
       Categories: Categories,
       LongDes1: LongDes1,
-      AdditionalPhotos:[] ,
+      AdditionalPhotos: [],
     );
     try {
       DocumentReference ref = await _db
@@ -445,23 +493,22 @@ print(dataList);
       'AdditionalPhotos': FieldValue.arrayUnion([image]),
     });
   }
-  Future<void> updatePhotoImage(String image, String id) {
 
+  Future<void> updatePhotoImage(String image, String id) {
     return _db.collection("Photos").doc(id).update({
       "Imagepath": image,
     }).then((value) => print("Done"));
   }
 
-  Future<List<String>> getPhotosData()async{
+  Future<List<String>> getPhotosData() async {
     List<String> Photos1 = [];
 
     await _db.collection("Photos").get().then((value) {
-
-      for(int i=0;i<value.docs.length;i++){
-        Photos1.add((value.docs[i]["Imagepath"]));}
+      for (int i = 0; i < value.docs.length; i++) {
+        Photos1.add((value.docs[i]["Imagepath"]));
+      }
     });
     print(Photos1);
     return Photos1;
   }
 }
-

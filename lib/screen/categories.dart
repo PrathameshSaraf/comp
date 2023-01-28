@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 
 import '../Models/Database.dart';
 import '../widgets/AppBar.dart';
+import 'History.dart';
 import 'ProductScreen.dart';
 
 
 class CategoriesData extends StatefulWidget {
   //const CategoriesData({Key? key}) : super(key: key);
-String data;
-CategoriesData({required this.data});
+String data,mobile;
+CategoriesData({required this.data,required this.mobile});
 
   @override
   State<CategoriesData> createState() => _CategoriesDataState();
@@ -103,7 +104,7 @@ getProducts() async {
                               Navigator.push(
                               context,
                               MaterialPageRoute(
-                              builder: (context) =>ProductScreen(Gender: widget.data)
+                              builder: (context) =>ProductScreen(Gender: widget.data,mobile: widget.mobile,)
                               ))
                               }, title:products.elementAt(index)['title'], ImageUrl:products.elementAt(index)['ImagePath'],Gender:products.elementAt(index)['Gender'], ),
 
@@ -131,7 +132,13 @@ getProducts() async {
                     Container(
                       padding: EdgeInsets.all(10),
                       child: InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>CustomerHistory(),
+                                      ));
+                          },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16.0),
                             child:Stack(

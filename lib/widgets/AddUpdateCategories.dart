@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comp/Admin/Dashbord.dart';
 import 'package:comp/widgets/Button.dart';
+import 'package:comp/widgets/category.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +13,9 @@ import '../Models/Database.dart';
 import '../Models/StorageServices.dart';
 
 class AddEditCategoryScreen extends StatefulWidget {
-
+   List<dynamic> product;
+   int index;
+   AddEditCategoryScreen({required this.product,required this.index});
   @override
   State<AddEditCategoryScreen> createState() => _AddEditCategoryScreenState();
 }
@@ -42,17 +45,18 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
   void initState() {
     super.initState();
     //load categories first
-    // if (widget.product != null) {
-    //   //edit
-    //   _productTitleController.text = widget.product!.title;
-    //   _productPriceController.text = widget.product!.price;
-    //   _productDescriptionController.text = widget.product!.description;
-    //   isRecommended = widget.product!.recommended;
-    //   isTopPicks = widget.product!.topPicks;
-    //   isTopSelling = widget.product!.topSelling;
-    //   isNonVeg = widget.product!.isNonVeg;
-    // }
-    // loadCategories();
+    if (widget.product.length >0) {
+      //edit
+       _productTitleController.text=widget.product[widget.index].title;
+      _AddController.text=widget.product[widget.index].Description;
+      setState(() {
+        dropdownValue=widget.product[widget.index].Gender;
+        for(int i=0;i<5;i++){
+        _addTile();
+        }
+      });
+    }
+
   }
 
   // loadCategories() async {
@@ -112,7 +116,6 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
         setState(() {
           _controllers.add(controller);
           _fields.add(field);
-
         });
       },
     );
@@ -228,7 +231,7 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
                 borderRadius: BorderRadius.circular(20.0),
                 child:
                 image == null
-                    ? 0>1
+                    ? widget.product.length>0
                     ? SizedBox(
                   width: width-200,
                   height: 200.0,
@@ -239,9 +242,8 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
                           value: progress.progress,
                         ),
                       ),
-                      imageUrl: "https://firebasestorage.googleapis.com/v0/b/saloonapp-e9508.appspot.com/o/Photos%2F097485443073593922?alt=media&token=76cc1642-6f48-488a-8d12-22c120249e24"),
-
-                )
+                      imageUrl:widget.product[widget.index].ImagePath
+                ))
                     : Container(
                   width: width,
                   height: 240.0,
@@ -474,7 +476,6 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
                     Container(
                       child: Column(
                         children: [
-
                       _listView(),
                           _addTile(),
                         ],

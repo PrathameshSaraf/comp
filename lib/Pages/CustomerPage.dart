@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../Models/Database.dart';
 import '../Models/customer.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 class CustomerPage extends StatefulWidget {
 
   @override
