@@ -192,6 +192,12 @@ class StylistCard extends StatelessWidget {
                     fontWeight: FontWeight.w300,
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child:IconButton(onPressed: (){}, icon:Icon(Icons.edit))),
+                )
               ],
             ),
           ),

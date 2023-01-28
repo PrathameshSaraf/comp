@@ -9,10 +9,9 @@ import '../widgets/HeaderCards.dart';
 import '../widgets/Responsive.dart';
 import '../widgets/SideMenu.dart';
 
-
 class Dashbord extends StatefulWidget {
-   int val;
-   Dashbord({required this.val});
+  int val;
+  Dashbord({required this.val});
   @override
   State<Dashbord> createState() => _DashbordState();
 }
@@ -40,34 +39,45 @@ class _DashbordState extends State<Dashbord> {
     //   });
     // }
     return Scaffold(
-       appBar:   AppBar(
+        appBar: AppBar(
           backgroundColor: Colors.orange,
           foregroundColor: Colors.black,
           elevation: 0.0,
-        ) ,
+        ),
         drawer: width < 1100
             ? SideMenu(
-          web: false,
-          changeScreen: changeScreen,
-        )
-             : null,
+                web: false,
+                changeScreen: changeScreen,
+              )
+            : null,
         body: SafeArea(
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           // //We want this side menu only for large screen
-               if (Responsive.isDesktop(context))
-                 Container(
-                   color: Colors.white,
-                  width: 280,
-                  child: SideMenu(
-                    web: true,
-                    changeScreen: changeScreen,
-              ),),
-      widget.val==1?DashbordPage():widget.val==2?CustomerPage():widget.val==3?ClientPage():widget.val==4?AddPhotoPage(Gender: "Male",value: true,):widget.val==5?
-                  CategoriesPage():locationPage(),
-      //            AddPhotoPage(Gender: "Male", value: true)
-             ])));
+          if (Responsive.isDesktop(context))
+            Container(
+              color: Colors.white,
+              width: 280,
+              child: SideMenu(
+                web: true,
+                changeScreen: changeScreen,
+              ),
+            ),
+          widget.val == 1
+              ? DashbordPage()
+              : widget.val == 2
+                  ? CustomerPage()
+                  : widget.val == 3
+                      ? ClientPage()
+                      : widget.val == 4
+                          ? AddPhotoPage(
+                              Gender: "Male",
+                              value: true,
+                            )
+                          : widget.val == 5
+                              ? CategoriesPage()
+                              : locationPage(),
+          //            AddPhotoPage(Gender: "Male", value: true)
+        ])));
   }
 }
 

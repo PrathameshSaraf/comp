@@ -9,6 +9,12 @@ class Customer {
   String Gender;
   String ImagePath;
   DateTime lastVi;
+  int Day=1;
+  String day="";
+  DateTime Date=DateTime.now();
+  String image1_url='';
+  String image2_url='';
+  String Description='';
 
   Customer({required this.id,required this.fname,required this.lname,required this.Gender,required this.phno,required this.ImagePath,required this.lastVi});
 
@@ -21,7 +27,6 @@ class Customer {
       "phno": phno,
       "Gender":Gender,
       "lastVi":lastVi,
-
     };
   }
 
