@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comp/Models/location.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:csv/csv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'Categories.dart';
 import 'Clients.dart';
 import 'Photos.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'customer.dart';
 
 class DatabaseServices {
   final _db = FirebaseFirestore.instance;
-  final _storage = FirebaseStorage.instance;
+
 
 //=================================Customer===============================================================
   Future<String> addCostomer(String id, String fName, String lName,
@@ -42,13 +42,15 @@ class DatabaseServices {
     }
   }
 
-  Future<void> addDataForCustomerByMobileNumber(String mobileNumber, Map<String, dynamic> data) async {
+  Future<String> addDataForCustomerByMobileNumber(String mobileNumber, Map<String, dynamic> data) async {
     try {
-      print(DateTime.now().day.toString());
-     await _db.collection("custmer").doc(mobileNumber).collection(mobileNumber).add(data);
+      DocumentReference ref= await _db.collection("custmer").doc(mobileNumber).collection(mobileNumber).add(data);
+      print(ref.id);
+      return ref.id;
     }catch(e){
       print(e);
     }
+    return '';
     }
 
   Future<List> getDataFromMobile(String mobileNumber) async {
@@ -75,7 +77,7 @@ class DatabaseServices {
     return dataList;
   }
 
-  UpdateCostomer(String id, String Name, String Gender, String phno,
+  UpdateCostomer(String id, String Name, String Gender, String phno,String image,
       BuildContext context) async {
     //final categoryData = Customer(id:id,name:Name,Gender: Gender,phno: phno);
     try {
@@ -128,24 +130,24 @@ class DatabaseServices {
   //   }
   // }
 
-  Future<List> getHistoryData() async {
-    List dataList = [];
-    try {
-      await FirebaseFirestore.instance
-          .collection('custmer')
-          .get()
-          .then((QuerySnapshot querySnapshot) => {
-                querySnapshot.docs.forEach((doc) {
-                  dataList.add(doc.data());
-                }),
-              });
-
-      return dataList;
-    } catch (e) {
-      // print(e.toString());
-      return [];
-    }
-  }
+  // Future<List> getHistoryData() async {
+  //   List dataList = [];
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('custmer')
+  //         .get()
+  //         .then((QuerySnapshot querySnapshot) => {
+  //               querySnapshot.docs.forEach((doc) {
+  //                 dataList.add(doc.data());
+  //               }),
+  //             });
+  //
+  //     return dataList;
+  //   } catch (e) {
+  //     // print(e.toString());
+  //     return [];
+  //   }
+  // }
 
   Future<List<Customer>> getCustomerData() async {
     List<Customer> dataList = [];
@@ -164,7 +166,6 @@ class DatabaseServices {
         lastVi: snap['lastVi'].toDate(),
       ));
     }
-
     return dataList;
   }
 
@@ -175,7 +176,7 @@ class DatabaseServices {
     });
   }
 
-  //
+
   // Future<List<PhotoUpload>> getCategories(BuildContext context) async {
   //   List<PhotoUpload> categories = [];
   //   QuerySnapshot snapshots =
@@ -251,6 +252,51 @@ class DatabaseServices {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Unable to update data $e")));
       return "";
+    }
+  }
+
+
+
+
+  Future<File> get _localFile async {
+    //final path = await _localPath;
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    return File('$dir/data.csv').create();
+  }
+  getCsv() async {
+
+    List<List<dynamic>> rows = <List<dynamic>>[];
+
+    var cloud =  await FirebaseFirestore.instance
+        .collection('custmer')
+        .get();
+
+    rows.add([
+      "Name",
+      "Gender",
+      "Phone Number",
+      "Email",
+      "Age",
+      "Area",
+      "Assembly",
+      "Meal Ticket"
+    ]);
+
+    if (cloud.docs != null) {
+      for (int i = 0; i < cloud.docs.length; i++) {
+        List<dynamic> row = <dynamic>[];
+        row.add(cloud.docs[i]["fname"]);
+        row.add(cloud.docs[i]["fname"]);
+        row.add(cloud.docs[i]["fname"]);
+        row.add(cloud.docs[i]["fname"]);
+        row.add(cloud.docs[i]["fname"]);
+        rows.add(row);
+      }
+
+      File f = await _localFile;
+
+      String csv = const ListToCsvConverter().convert(rows);
+      f.writeAsString(csv);
     }
   }
 
@@ -499,6 +545,7 @@ class DatabaseServices {
       "Imagepath": image,
     }).then((value) => print("Done"));
   }
+
 
   Future<List<String>> getPhotosData() async {
     List<String> Photos1 = [];

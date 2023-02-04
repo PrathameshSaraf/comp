@@ -1,5 +1,8 @@
+import 'package:comp/Pages/settingPage.dart';
 import 'package:flutter/material.dart';
 
+import '../screen/lastPage.dart';
+import '../screen/setting.dart';
 import '../widgets/Button.dart';
 import 'Dashbord.dart';
 
@@ -145,22 +148,30 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: () => {
                                 if (!_formKey.currentState!.validate())
                                   {
+
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text("Unable to Login")))
                                   },
-                                //  if(_formKey.currentState!.validate()  && user==_emailController.text && pass==_passwordController.text){
-                                Navigator.push(
+                                 if(_formKey.currentState!.validate()  && user==_emailController.text && pass==_passwordController.text){
+
+                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             Dashbord(val: 1))).then((value) {
                                   _passwordController.clear();
                                   _emailController.clear();
-                                })
-                              }
-                          //}
-                          ),
+
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (context) =>SettingsPage())),
+                                // }})
+                          })}})
+
+
+                          ,
                       const SizedBox(
                         height: 10.0,
                       ),

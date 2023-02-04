@@ -1,9 +1,10 @@
 
+import 'package:comp/Admin/Dashbord.dart';
 import 'package:comp/Models/AllMethods.dart';
+import 'package:comp/Models/StorageServices.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../Admin/Dashbord.dart';
-import '../Admin/addPhotos.dart';
+
 import '../Models/Database.dart';
 import '../screen/photoSlider.dart';
 import '../widgets/AddUpdateCategories.dart';
@@ -20,6 +21,7 @@ class AddPhotoPage extends StatefulWidget {
 
 class _AddPhotoPageState extends State<AddPhotoPage> {
   final db = DatabaseServices();
+  final st = Storage();
   final fb = FirebaseFirestore.instance;
   final all=allMethods();
   bool _isloading = true;
@@ -44,12 +46,24 @@ class _AddPhotoPageState extends State<AddPhotoPage> {
     setState(() {});
   }
 
-  delete(List<String> IDS) {
-    IDS.forEach((data) {
-      fb.collection("PhotosCategories").doc(data).delete().then((_) {
-        print("success!");
-      });
+  delete(List<String> IDS)async{
+    for (var data in IDS) {
+      DocumentSnapshot snapshot = await fb.collection("Photos").doc(data).get();
+      if (snapshot.exists) {
+        Map map = Map.from(snapshot.data() as Map<dynamic,dynamic>);
+         List<dynamic> ph=map['AdditionalPhotos'];
+         ph.forEach((element) {
+           st.deleteImage(element,'Photos');
+         });
+        st.deleteImage(map['Imagepath'],'Photos');
+      } else {
+        print("Data not found for document: $data");
+      }
+    fb.collection("Photos").doc(data).delete().then((_) {
+    print("success!");
     });
+    }
+
   }
   
   @override
@@ -74,17 +88,7 @@ class _AddPhotoPageState extends State<AddPhotoPage> {
     }
 
 
-    return _isloading
-        ? Container(
-            // color: Colors.white,
-            child: Expanded(
-                // Expanded_A
-                child: Container(
-                    // color: Colors.white,
-                    child: Center(
-            child: CircularProgressIndicator(),
-          ))))
-   : Container(
+    return  Container(
             //  color: Colors.white,
             child: Expanded(
                 // Expanded_A
@@ -171,8 +175,18 @@ class _AddPhotoPageState extends State<AddPhotoPage> {
                                         child: InkWell(
                                           splashColor: Colors.red, // Splash color
                                           onTap: () {
-
-                                          },
+                                            if(!IDS.isEmpty){
+                                            delete(IDS);
+                                            all.fetchData(context,Dashbord(val: 4));
+                                            }
+                                            else{
+                                            showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                            return alert;
+                                            },
+                                            );
+                                          }},
                                           child: SizedBox(width: 56, height: 56, child: Icon(Icons.delete)),
                                         ),
                                       ),
@@ -183,7 +197,17 @@ class _AddPhotoPageState extends State<AddPhotoPage> {
 
                     ]),
               ),
-              Expanded(
+              _isloading
+                  ? Container(
+                // color: Colors.white,
+                  child: Expanded(
+                    // Expanded_A
+                      child: Container(
+                        // color: Colors.white,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ))))
+                  :Expanded(
                 child: SizedBox(
                     width: double.infinity,
                     child: SingleChildScrollView(
@@ -238,8 +262,7 @@ class _AddPhotoPageState extends State<AddPhotoPage> {
                                                           products[index!]['id']),
                                                       onChanged: (bool? value) {
                                                         setState(() {
-                                                          if (IDS.contains(
-                                                              products[index!]['id'])) {
+                                                          if (IDS.contains(products[index!]['id']!)) {
                                                             IDS.remove(products[index!]['id']); // unselect
                                                           } else {
                                                             IDS.add(products
@@ -247,7 +270,7 @@ class _AddPhotoPageState extends State<AddPhotoPage> {
                                                                         index!)[
                                                                 'id']); // select
                                                           }
-                                                            value==true?IDS.add(products.elementAt(index!)['id']):IDS.remove(products.elementAt(index!)['id']);
+                                                           // value==true?IDS.add(products.elementAt(index!)['id']):IDS.remove(products.elementAt(index!)['id']);
                                                           print(IDS);
                                                         });
                                                       },

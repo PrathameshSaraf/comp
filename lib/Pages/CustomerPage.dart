@@ -197,7 +197,7 @@ class _CustomerPageState extends State<CustomerPage> {
                 child: DataTable(
                   sortAscending: sort,
                   sortColumnIndex: 1,
-                  columnSpacing: width>1472?50:width>1380?40:width>1300?30:width>1280?20:10,
+
                   columns: [
                     const DataColumn(
                       label: Text(

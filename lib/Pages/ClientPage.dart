@@ -1,15 +1,13 @@
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
 import '../Admin/Dashbord.dart';
+import '../Models/AllMethods.dart';
 import '../Models/Clients.dart';
 import '../Models/Database.dart';
 import '../screen/Signup.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-
 class ClientPage extends StatefulWidget {
 
   @override
@@ -20,7 +18,7 @@ class _ClientPageState extends State<ClientPage> {
   TextEditingController controller = TextEditingController();
 
   final db = DatabaseServices();
-
+  final all=allMethods();
   List<String> IDS = [];
   bool _isloading=true;
   int i=0;
@@ -28,7 +26,7 @@ class _ClientPageState extends State<ClientPage> {
   bool sort = true;
   List<Client>? filterData;
   List<Client> products=[];
-
+  final fb = FirebaseFirestore.instance;
   void chooseFileUsingFilePicker() async {
     //-----pick file by file picker,
 
@@ -104,6 +102,14 @@ class _ClientPageState extends State<ClientPage> {
     setState(() {
     });
   }
+  delete(List<String> IDS)async{
+    for (var data in IDS) {
+      fb.collection("Clients").doc(data).delete().then((_) {
+        print("success!");
+      });
+    }
+  }
+
   onSelectedRow(bool selected, var product) async {
     setState(() {
       if (IDS.contains(product)) {
@@ -138,7 +144,19 @@ class _ClientPageState extends State<ClientPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Not Select any Photo"),
+      content: Text("Please selete atleast One Photo"),
+      actions: [
+        okButton,
+      ],
+    );
     if(products.length>0){
       setState(() {
 
@@ -182,10 +200,22 @@ class _ClientPageState extends State<ClientPage> {
                                 alignment: Alignment.topRight,
                                 child: Container(
                                   color: Colors.white,
-                                  width: 210,
+                                  width: 290,
                                   child: Row(
                                     children: [
-
+                                      ClipOval(
+                                        child: Material(
+                                          color: Colors.orange, // Button color
+                                          child: InkWell(
+                                            splashColor: Colors.red, // Splash color
+                                            onTap: () {
+                                              db.getCsv();
+                                            },
+                                            child: SizedBox(width: 56, height: 56, child: Icon(Icons.download)),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 20,),
                                       ClipOval(
                                         child: Material(
                                           color: Colors.orange, // Button color
@@ -269,9 +299,17 @@ class _ClientPageState extends State<ClientPage> {
                                           child: InkWell(
                                             splashColor: Colors.red, // Splash color
                                             onTap: () {
-
-
-                                            },
+                                              if(!IDS.isEmpty){
+                                              delete(IDS);
+                                              all.fetchData(context,Dashbord(val: 3));
+                                              }
+                                              else{
+                                              showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                              return alert;
+                                              },
+                                              );}},
                                             child: SizedBox(width: 56, height: 56, child: Icon(Icons.delete)),
                                           ),
                                         ),
@@ -322,7 +360,6 @@ class _ClientPageState extends State<ClientPage> {
                         scrollDirection: Axis.horizontal,
                         child: Column(
                           children: <Widget>[
-
                             SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               child: DataTable(
@@ -330,7 +367,7 @@ class _ClientPageState extends State<ClientPage> {
                                 sortAscending: sort,
                                 sortColumnIndex: 0,
 
-                                columnSpacing: width>1472?50:width>1380?40:width>1300?30:width>1280?20:10,
+                               // columnSpacing: width>1472?50:width>1380?40:width>1300?30:width>1280?20:10,
                                 columns: [
 
                                   DataColumn(

@@ -16,13 +16,19 @@ class Category extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(Gender);
+
     return Container(
       padding: EdgeInsets.all(10),
       child: InkWell(
+          borderRadius: BorderRadius.circular(10.0),
           onTap: onTap,
-          child: ClipRRect(
-           borderRadius: BorderRadius.circular(16.0),
+   child: Container(
+    decoration: BoxDecoration(
+    //borderRadius: BorderRadius.circular(12.0),
+    border: Border.all(color: Colors.black, width: 1.2,),
+    ),
+    child: ClipRRect(
+          // borderRadius: BorderRadius.circular(16.0),
             child:Stack(
 
                 children: [
@@ -35,24 +41,29 @@ class Category extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    bottom: 10,
-                    left: 13,
+                    bottom: 0,
+                    left: 1,
                     right: 0,
-                    child: Row(
-                      children: [
-                        Text(title,style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.black
-                        ),),
-                        SizedBox(width: 10,),
-                        Gender=='Male'?Icon(Icons.man):Gender=="Female"? Icon(Icons.woman_sharp):Icon(Icons.people)
-                      ],
+                    child:
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            //border:
+                          ),
+                         child: Row(
+                            children: [
+                              Text(title,style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.black
+                          ),),
+                        Gender=='Male'?Icon(Icons.man):Gender=="Female"? Icon(Icons.woman_sharp):Icon(Icons.people)])
+
                     )
                   ),
                 ]),)
       ),
-    );
+      ));
   }
 }
 
@@ -168,24 +179,7 @@ class StylistCard extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                // MaterialButton(
-                //   onPressed: () {
-                //     // Navigator.push(
-                //     //     context,
-                //     //     MaterialPageRoute(
-                //     //         builder: (context) => DetailScreen(stylist)));
-                //   },
-                //   color: Color(0xff4E295B),
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(20),
-                //   ),
-                //   child: Text(
-                //     'View Profile',
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
+
                 Text(
                   address,
                   style: TextStyle(

@@ -114,6 +114,7 @@ class _RecordCostomerState extends State<RecordCostomer> {
                         return null;
 
                       },
+
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:

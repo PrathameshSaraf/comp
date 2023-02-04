@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:comp/Models/Database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,7 +13,7 @@ import 'package:firebase_core/firebase_core.dart' as firebase_core;
 
 class Storage {
   final db = DatabaseServices();
-
+  final _db = FirebaseFirestore.instance;
 
   List<String> listUrls = [];
   final firebase_storage.FirebaseStorage storage = firebase_storage
@@ -20,12 +21,23 @@ class Storage {
   firebase_storage.Reference? ref;
   double val = 0;
 
-  Future<void> deletePhoto(String photoId, String folder) async {
-    final storageReference = storage.ref().child('$folder/$photoId');
-    await storageReference.delete();
-  }
+  Future<void> deleteImage(String imageUrl, String folder) async {
+    final storageReference = storage.refFromURL(imageUrl);
+    // Check if the image exists
+    var imageExists = await storageReference.getMetadata().then((metadata) => true, onError: (error) => false);
+    // If the image exists, delete it
+    if (imageExists) {
+      await storageReference.delete().then((value) => print("sucess"));
+    }
+     }
+  // Future<void> deletePhoto(String photoId, String folder) async {
+  //   final storageReference = storage.ref().child('$folder/$photoId');
+  //   await storageReference.delete();
+  //   print('sucess');
+  // }
 //========================================Customer=============================================================
   Future<void> uploadFile(File file, String fileName, String id) async {
+    String url1='';
     try {
       await storage.ref('customers/$fileName' + ".jpg").putFile(file).then(
           await(taskSnapshot) {
@@ -37,7 +49,7 @@ class Storage {
                   'customers/$fileName' + ".jpg")
                   .getDownloadURL()
                   .then((url) {
-                // url;
+                url1 = url;
                 db.updateCategoryImage(url, id);
                 print("Here is the URL of Image $url");
                 return url;
@@ -45,11 +57,95 @@ class Storage {
                 print("Got Error $onError");
               });
             }
+            else{
+              return '';
+            }
           });
     }
     on firebase_core.FirebaseException catch (e) {
       print(e);
     }
+
+  }
+
+  Future<String> uploadFile1(File file,id,comid) async {
+    String fileName =file!
+        .path
+        .split('/')
+        .last;
+    String url1='';
+    try {
+      await storage.ref('customers/$fileName' ).putFile(file).then(
+          await(taskSnapshot) {
+            print("task done");
+
+// download url when it is uploaded
+            if (taskSnapshot.state == firebase_storage.TaskState.success) {
+              firebase_storage.FirebaseStorage.instance.ref(
+                  'customers/$fileName')
+                  .getDownloadURL()
+                  .then((url) {
+                url1 = url;
+                try {
+                  print("Here is the URL of Image $url");
+                  _db.collection("custmer").doc(comid).collection(comid).doc(id).update({'Bimage':url});
+                } catch (e) {
+                  print(e);
+                }
+                return url;
+              }).catchError((onError) {
+                print("Got Error $onError");
+              });
+            }
+            else{
+              return '';
+            }
+          });
+    }
+    on firebase_core.FirebaseException catch (e) {
+      print(e);
+    }
+    return url1;
+  }
+  Future<String> uploadFile2(File file,id,comid) async {
+    String fileName =file!
+        .path
+        .split('/')
+        .last;
+    String url1='';
+    try {
+      await storage.ref('customers/$fileName').putFile(file).then(
+          await(taskSnapshot) {
+            print("task done");
+
+// download url when it is uploaded
+            if (taskSnapshot.state == firebase_storage.TaskState.success) {
+              firebase_storage.FirebaseStorage.instance.ref(
+                  'customers/$fileName')
+                  .getDownloadURL()
+                  .then((url) {
+                url1 = url;
+
+                try {
+                  print("Here is the URL of Image $url");
+                  _db.collection("custmer").doc(comid).collection(comid).doc(id).update({'Aimage':url});
+                } catch (e) {
+                  print(e);
+                }
+                return url;
+              }).catchError((onError) {
+                print("Got Error $onError");
+              });
+            }
+            else{
+              return '';
+            }
+          });
+    }
+    on firebase_core.FirebaseException catch (e) {
+      print(e);
+    }
+    return url1;
   }
 
 //=============================================Photos=====================================================

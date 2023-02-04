@@ -3,6 +3,7 @@ import '../Models/Database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../screen/ABPhtoclick.dart';
+import 'AppBar.dart';
 import 'PhotoDiscription.dart';
 
 class Product extends StatefulWidget {
@@ -40,22 +41,25 @@ class _ProductState extends State<Product> {
         _isloading = false;
       });
     }
-
-    return _isloading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : SingleChildScrollView(
-            child: Column(
-            children: <Widget>[
+    //
+    return  Scaffold(
+        appBar: AppbarSample().getAppBar('CUNSULTATION PRO'),
+    body: _isloading ? const Center(
+    child: CircularProgressIndicator(),
+    ): SafeArea(
+        child: SingleChildScrollView(
+            child: Column(children: <Widget>[
+            Padding(
+             padding: EdgeInsets.all(10),
+            child: Column(children: <Widget>[
               GridView.builder(
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: products.length, //images.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 6.0,
-                    mainAxisSpacing: 6.0),
+                    crossAxisSpacing: 12.0,
+                    mainAxisSpacing: 12.0),
                 itemBuilder: (BuildContext context, int index) {
                   if (products != null && products.length > index) {
                     return InkWell(
@@ -97,6 +101,9 @@ class _ProductState extends State<Product> {
                                                               .spaceBetween,
                                                       children: <Widget>[
                                                         ElevatedButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor: MaterialStateProperty.all(Colors.orange),
+                                                          ),
                                                           child: Text(
                                                               'See Description'),
                                                           onPressed: () {
@@ -133,6 +140,9 @@ class _ProductState extends State<Product> {
                                                           },
                                                         ),
                                                         ElevatedButton(
+                                                            style: ButtonStyle(
+                                                              backgroundColor: MaterialStateProperty.all(Colors.orange),
+                                                            ),
                                                           child:
                                                               Text('Proceed'),
                                                           onPressed: () {
@@ -153,62 +163,28 @@ class _ProductState extends State<Product> {
                                         );
                                       })));
                         },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16.0),
-                          child: Stack(children: [
-                            Positioned(
-                              child: Image.network(
-                                products.elementAt(index!)['Imagepath'],
-                                height: 200.0,
-                                width: 170,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.all(10.0),
-                                decoration: const BoxDecoration(
-                                  color: Colors.black45,
+                        child:
+                           Container(
+                             decoration: BoxDecoration(
+                               borderRadius: BorderRadius.circular(16.0),
+                               border: Border.all(color: Colors.black, width: 1.2,),
+                             ),
+                             child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16.0),
+                                   child: Image.network(
+                                     products.elementAt(index!)['Imagepath'],
+                                     height: 200.0,
+                                     width: 170,
+                                     fit: BoxFit.cover,    ),
                                 ),
-                                child: IconButton(
-                                  iconSize: 50,
-                                  icon: const Icon(
-                                    Icons.delete_forever,
-                                    color: Colors.blue,
-                                  ),
-                                  onPressed: () async {
-                                    setState(() {
-                                      String data =
-                                          products.elementAt(index!)['id'];
-                                      print(data);
-                                      fb
-                                          .collection("PhotosCategories")
-                                          .doc(data)
-                                          .delete()
-                                          .then((_) {
-                                        print("success!");
-                                      });
-                                      setState(() {
-                                        getProducts();
-                                      });
-                                    });
-                                    //Navigator.of(context).pop();
-                                  },
-                                ),
-                              ),
-                            ),
-                          ]),
-                        ));
+                           ),
+                        );
                   } else {
                     return Container();
                   }
                 },
               )
             ],
-          ));
+          ))]))));
   }
 }

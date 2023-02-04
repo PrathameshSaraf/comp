@@ -74,8 +74,7 @@ class _PhotoSliderState extends State<PhotoSlider> {
                 SizedBox(
                   height: 10,
                 ),Container(
-                    child: TextButton(onPressed: (){}, child: Text("See Datails")),color: Colors.orange,
-
+                    child: TextButton(onPressed: (){}, child: Text("See Datails"),),color: Colors.orange,
                 )
               ],
             );

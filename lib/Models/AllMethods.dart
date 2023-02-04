@@ -37,4 +37,6 @@ class allMethods{
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => Nav));
   }
+
+
 }

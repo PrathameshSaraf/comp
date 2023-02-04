@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
 
         RecordCostomer.routeName:(ctx)=>RecordCostomer(),
         SignupPage.routeName:(ctx)=>SignupPage(),
-        AddPhotos.routeName: (ctx) =>AddPhotos(),
+        //AddPhotos.routeName: (ctx) =>AddPhotos(),
         //editDeleteScreen.routeName:(ctx)=>editDeleteScreen( ),
        // HistoryScreen.routeName:(ctx)=>HistoryScreen(),
       },

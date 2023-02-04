@@ -98,7 +98,7 @@ class _LoginState extends State<LoginState> {
               height: 40,
             ),
             Text(
-              "CONSULTION PRO ",
+              "CONSULTATION PRO ",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -200,15 +200,12 @@ class _LoginState extends State<LoginState> {
                       children: [
                         InkWell(
                           onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (BuildContext context) {
-                                  //return (forgot());
-                                  return HtmlEditorExample();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>forgot()
+                                ));
 
-                                });
-                            //Navigator.of(context).pushNamed(forgot.routeName);
                           },
                           child: const Text(
                             "Forget Password?",
