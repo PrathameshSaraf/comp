@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../Models/Database.dart';
+import 'ABPhtoclick.dart';
+import '../services/Database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../screen/ABPhtoclick.dart';
-import 'AppBar.dart';
+
+import '../widgets/AppBar.dart';
 import 'PhotoDiscription.dart';
 
 class Product extends StatefulWidget {

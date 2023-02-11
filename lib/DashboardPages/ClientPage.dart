@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
 import '../Admin/Dashbord.dart';
-import '../Models/AllMethods.dart';
+import '../Common/AllMethods.dart';
+import '../MobileScreen/Signup.dart';
 import '../Models/Clients.dart';
-import '../Models/Database.dart';
-import '../screen/Signup.dart';
+import '../services/Database.dart';
 import 'package:file_picker/file_picker.dart';
 class ClientPage extends StatefulWidget {
 

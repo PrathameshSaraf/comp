@@ -1,11 +1,12 @@
-import 'package:comp/Pages/settingPage.dart';
+
 import 'package:flutter/material.dart';
-import '../Pages/AddPhotoPage.dart';
-import '../Pages/CategoriesPage.dart';
-import '../Pages/ClientPage.dart';
-import '../Pages/CustomerPage.dart';
-import '../Pages/DashbordPage.dart';
-import '../Pages/locationPage.dart';
+import '../DashboardPages/AddPhotoPage.dart';
+import '../DashboardPages/CategoriesPage.dart';
+import '../DashboardPages/ClientPage.dart';
+import '../DashboardPages/CustomerPage.dart';
+import '../DashboardPages/DashbordPage.dart';
+import '../DashboardPages/locationPage.dart';
+import '../DashboardPages/settingPage.dart';
 import '../widgets/HeaderCards.dart';
 import '../widgets/Responsive.dart';
 import '../widgets/SideMenu.dart';

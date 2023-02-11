@@ -1,7 +1,9 @@
-import 'package:comp/screen/RecordCustomer.dart';
+
 import 'package:comp/widgets/Button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'RecordCustomer.dart';
 
 class SuccessPage extends StatefulWidget {
   @override

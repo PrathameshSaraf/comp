@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../Models/Categories.dart';
-import '../Models/Database.dart';
-import '../widgets/AddUpdateCategories.dart';
+import '../services/Database.dart';
+import '../DialogBox/AddUpdateCategories.dart';
 import 'ClientPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

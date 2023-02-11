@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 
-import '../Models/AuthExceptionHandler.dart';
+import '../Common/AuthExceptionHandler.dart';
 import '../Models/Clients.dart';
-import '../Models/Database.dart';
-import '../Models/auth_servies.dart';
+import '../services/Database.dart';
+import '../services/auth_servies.dart';
 import '../widgets/AppBar.dart';
 import '../widgets/Button.dart';
 

@@ -1,4 +1,4 @@
-import 'package:comp/screen/lastPage.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:comp/widgets/Button.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import '../Models/Database.dart';
-import '../Models/StorageServices.dart';
+import '../services/Database.dart';
+import '../services/StorageServices.dart';
 import '../widgets/AppBar.dart';
+import 'lastPage.dart';
 String? Cu_id;
 class ABPhtoclick extends StatefulWidget {
   String Time,mobile;

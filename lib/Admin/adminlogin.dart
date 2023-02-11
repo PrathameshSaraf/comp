@@ -1,3 +1,4 @@
+import 'package:comp/Common/AllMethods.dart';
 import 'package:flutter/material.dart';
 import '../widgets/Button.dart';
 import 'Dashbord.dart';
@@ -14,16 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   String user = "Saraf@gmail.com";
   String pass = "123456";
-
-  InputDecoration getInputDecoration(String label) {
-    return InputDecoration(
-      labelText: label,
-      border: OutlineInputBorder(
-        borderSide: const BorderSide(width: 1, color: Colors.orange),
-        borderRadius: BorderRadius.circular(15),
-      ),
-    );
-  }
+  final am=allMethods();
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         : "Enter valid email"
                                     : "Enter email";
                               },
-                              decoration: getInputDecoration("Username"),
+                              decoration: am.getInputDecoration("Username"),
                             ),
                             const SizedBox(
                               height: 20.0,
@@ -116,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     : "Enter Password";
                               },
                               obscureText: true,
-                              decoration: getInputDecoration("Password"),
+                              decoration: am.getInputDecoration("Password"),
                             ),
                             const SizedBox(
                               height: 20.0,
@@ -158,14 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _passwordController.clear();
                                   _emailController.clear();
 
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (context) =>SettingsPage())),
-                                // }})
                           })}})
-
-
                           ,
                       const SizedBox(
                         height: 10.0,

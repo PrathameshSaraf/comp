@@ -6,10 +6,10 @@ import 'package:comp/widgets/Button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../Models/AllMethods.dart';
-import '../Models/Database.dart';
-import '../Models/StorageServices.dart';
-import 'TextEditor.dart';
+import '../Common/AllMethods.dart';
+import '../services/Database.dart';
+import '../services/StorageServices.dart';
+import '../widgets/TextEditor.dart';
 
 class AddUpdatePhoto extends StatefulWidget {
 

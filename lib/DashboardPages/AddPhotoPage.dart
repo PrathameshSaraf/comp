@@ -1,14 +1,15 @@
 
 import 'package:comp/Admin/Dashbord.dart';
-import 'package:comp/Models/AllMethods.dart';
-import 'package:comp/Models/StorageServices.dart';
+import 'package:comp/Common/AllMethods.dart';
+import 'package:comp/services/StorageServices.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Models/Database.dart';
-import '../screen/photoSlider.dart';
-import '../widgets/AddUpdateCategories.dart';
-import '../widgets/AddUpdatePhoto.dart';
+import '../widgets/photoSlider.dart';
+import '../services/Database.dart';
+
+import '../DialogBox/AddUpdateCategories.dart';
+import '../DialogBox/AddUpdatePhoto.dart';
 import 'ClientPage.dart';
 
 class AddPhotoPage extends StatefulWidget {

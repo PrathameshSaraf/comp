@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../Models/Database.dart';
+import '../services/Database.dart';
 
 class PhotoSlider extends StatefulWidget {
   const PhotoSlider({Key? key}) : super(key: key);

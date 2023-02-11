@@ -1,8 +1,8 @@
-import 'package:comp/Models/Database.dart';
+import 'package:comp/services/Database.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/AddUpdateLocation.dart';
-import '../widgets/category.dart';
+import '../DialogBox/AddUpdateLocation.dart';
+import '../MobileScreen/category.dart';
 
 class locationPage extends StatefulWidget {
   const locationPage({Key? key}) : super(key: key);

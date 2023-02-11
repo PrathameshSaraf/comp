@@ -39,4 +39,30 @@ class allMethods{
   }
 
 
+  InputDecoration getInputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      focusedBorder: OutlineInputBorder(
+        borderSide:
+        BorderSide(color: Colors.blue, width: 1.5),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide:
+        BorderSide(color: Colors.black, width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide:
+        BorderSide(color: Colors.red, width: 1.5),
+      ),
+      border: OutlineInputBorder(
+        borderSide:
+        BorderSide(color: Colors.black, width: 1.5),
+      ),
+      disabledBorder: OutlineInputBorder(
+        borderSide:
+        BorderSide(color: Colors.black, width: 1.5),
+      ),
+    );
+  }
+
 }

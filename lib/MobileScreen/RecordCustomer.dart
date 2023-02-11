@@ -1,13 +1,15 @@
 import 'dart:io';
-import 'package:comp/screen/categories.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../Models/Database.dart';
-import '../Models/StorageServices.dart';
+import '../services/Database.dart';
+import '../services/StorageServices.dart';
 import '../Models/customer.dart';
 import '../widgets/AppBar.dart';
 import '../widgets/Button.dart';
 import 'package:flutter/services.dart';
+
+import 'categories.dart';
 
 String dropdownValue = 'Male';
 String? imageUrl;

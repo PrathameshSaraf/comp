@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import '../Admin/Dashbord.dart';
-import '../Models/AllMethods.dart';
-import '../Models/Database.dart';
-import '../Models/auth_servies.dart';
+import '../Common/AllMethods.dart';
+import '../services/Database.dart';
+import '../services/auth_servies.dart';
 import '../widgets/Button.dart';
 import '../widgets/createInputField.dart';
 

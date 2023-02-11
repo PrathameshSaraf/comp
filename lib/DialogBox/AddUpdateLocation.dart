@@ -2,9 +2,9 @@ import 'package:comp/Admin/Dashbord.dart';
 import 'package:comp/widgets/Button.dart';
 import 'package:flutter/material.dart';
 import 'package:csc_picker/csc_picker.dart';
-import '../Models/AllMethods.dart';
-import '../Models/Database.dart';
-import 'createInputField.dart';
+import '../Common/AllMethods.dart';
+import '../services/Database.dart';
+import '../widgets/createInputField.dart';
 
 
 

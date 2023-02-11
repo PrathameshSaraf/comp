@@ -1,4 +1,4 @@
-import 'package:comp/Models/Database.dart';
+import 'package:comp/services/Database.dart';
 import 'package:flutter/material.dart';
 
 class CustomerHistory extends StatefulWidget {

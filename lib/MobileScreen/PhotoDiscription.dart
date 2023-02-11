@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../Models/Database.dart';
-import 'AppBar.dart';
+import '../services/Database.dart';
+import '../widgets/AppBar.dart';
 
 class PhotoDiscription extends StatefulWidget {
   String name, id, Imagepath, summary;

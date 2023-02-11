@@ -1,12 +1,13 @@
 import 'package:comp/Admin/Dashbord.dart';
-import 'package:comp/screen/LoginPage.dart';
-import 'package:comp/screen/RecordCustomer.dart';
-import 'package:comp/screen/Signup.dart';
+
 import 'package:comp/widgets/Button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'Admin/adminlogin.dart';
+import 'MobileScreen/LoginPage.dart';
+import 'MobileScreen/RecordCustomer.dart';
+import 'MobileScreen/Signup.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 

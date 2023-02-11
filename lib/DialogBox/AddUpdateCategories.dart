@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comp/Admin/Dashbord.dart';
 import 'package:comp/widgets/Button.dart';
-import 'package:comp/widgets/category.dart';
+import 'package:comp/MobileScreen/category.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../Models/AllMethods.dart';
-import '../Models/Database.dart';
-import '../Models/StorageServices.dart';
+import '../Common/AllMethods.dart';
+import '../services/Database.dart';
+import '../services/StorageServices.dart';
 
 class AddEditCategoryScreen extends StatefulWidget {
    List<dynamic> product;

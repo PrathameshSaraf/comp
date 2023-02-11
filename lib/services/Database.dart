@@ -7,10 +7,10 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:csv/csv.dart';
 import 'package:image_picker/image_picker.dart';
-import 'Categories.dart';
-import 'Clients.dart';
-import 'Photos.dart';
-import 'customer.dart';
+import '../Models/Categories.dart';
+import '../Models/Clients.dart';
+import '../Models/Photos.dart';
+import '../Models/customer.dart';
 
 class DatabaseServices {
   final _db = FirebaseFirestore.instance;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Admin/adminlogin.dart';
 import '../Models/Clients.dart';
-import '../Models/Database.dart';
+import '../services/Database.dart';
 import '../widgets/Button.dart';
 import '../widgets/TextEditor.dart';
 import 'RecordCustomer.dart';

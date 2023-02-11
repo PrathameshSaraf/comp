@@ -1,7 +1,7 @@
-import 'package:comp/widgets/category.dart';
+import 'package:comp/MobileScreen/category.dart';
 import 'package:flutter/material.dart';
-import '../Models/Database.dart';
-import '../widgets/products.dart';
+import '../services/Database.dart';
+import 'products.dart';
 import 'History.dart';
 class CategoriesData extends StatefulWidget {
 String data,mobile;
