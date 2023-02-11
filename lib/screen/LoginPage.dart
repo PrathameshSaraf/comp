@@ -137,7 +137,7 @@ class _LoginState extends State<LoginState> {
                         ),
                         errorBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 1.5),
+                          BorderSide(color: Colors.red, width: 1.5),
                         ),
                         border: OutlineInputBorder(
                           borderSide:
@@ -173,7 +173,7 @@ class _LoginState extends State<LoginState> {
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.blue, width: 1.5),
+                          BorderSide(color: Colors.blue, width: 1.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
@@ -181,7 +181,7 @@ class _LoginState extends State<LoginState> {
                         ),
                         errorBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 1.5),
+                          BorderSide(color: Colors.red, width: 1.5),
                         ),
                         border: OutlineInputBorder(
                           borderSide:
@@ -218,7 +218,14 @@ class _LoginState extends State<LoginState> {
                       height: 30,
                     ),
                     ButtonW100(text: 'Login', onTap: (){
-                      loginUser(_PhoneController.text,_PassController.text);
+                      if(_formKey.currentState!.validate()){
+                      loginUser(_PhoneController.text,_PassController.text);}
+                      else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Username And Password Wrong."),
+                            ));
+                      }
                     }),
                     SizedBox(
                       height: 50,

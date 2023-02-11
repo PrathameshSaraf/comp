@@ -148,7 +148,7 @@ class SideMenu extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>Dashbord(val: 6)
+                        builder: (context) =>Dashbord(val: 7)
                     ));
               },
               title: const Text("Profile"),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comp/Models/location.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +54,19 @@ class DatabaseServices {
     }
     return '';
     }
+
+  Future<List> fetchHistoryData(String mobileNumber) async {
+    List dataList = [];
+    QuerySnapshot<Object> snapshot = await _db.collection("custmer").doc(mobileNumber).collection(mobileNumber).get();
+    for (QueryDocumentSnapshot snap in snapshot.docs) {
+      dataList.add(
+        {
+
+        }
+      );
+    }
+    return dataList;
+  }
 
   Future<List> getDataFromMobile(String mobileNumber) async {
     print(mobileNumber);

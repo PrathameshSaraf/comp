@@ -43,12 +43,32 @@ class _forgotState extends State<forgot> {
   Widget build(BuildContext context) {
 
     Widget _addTile() {
-      print(id);
+
       return Column(
         children: [
           TextFormField(
               controller:_PassController,
-              decoration: InputDecoration(labelText: 'Enter New Password'),
+              decoration: InputDecoration(labelText: 'Enter New Password',focusedBorder: OutlineInputBorder(
+                borderSide:
+                BorderSide(color: Colors.blue, width: 1.5),
+              ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide:
+                  BorderSide(color: Colors.black, width: 1.5),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide:
+                  BorderSide(color: Colors.red, width: 1.5),
+                ),
+                border: OutlineInputBorder(
+                  borderSide:
+                  BorderSide(color: Colors.black, width: 1.5),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderSide:
+                  BorderSide(color: Colors.black, width: 1.5),
+                ),
+              ),
               validator: (value) {
                 return value != null
                     ? value.length >= 6
@@ -61,7 +81,28 @@ class _forgotState extends State<forgot> {
           ),
           SizedBox(height: 30,),TextFormField(
               controller:_CPassController,
-              decoration: InputDecoration(labelText: 'Enter Confirm Password'),
+              decoration: InputDecoration(labelText: 'Enter Confirm Password',
+                            focusedBorder: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Colors.blue, width: 1.5),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Colors.black, width: 1.5),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Colors.red, width: 1.5),
+                            ),
+                            border: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Colors.black, width: 1.5),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Colors.black, width: 1.5),
+                            ),
+                            ),
               validator: (value) {
                 return value != null
                     ? value.length >= 6
@@ -100,7 +141,27 @@ class _forgotState extends State<forgot> {
                     child: ListView(children: <Widget>[
                       TextFormField(
                          controller:_EmailController,
-                          decoration: InputDecoration(labelText: 'Enter Gmail'),
+                          decoration: InputDecoration(labelText: 'Enter Gmail',focusedBorder: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Colors.blue, width: 1.5),
+                          ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: Colors.black, width: 1.5),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: Colors.red, width: 1.5),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: Colors.black, width: 1.5),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: Colors.black, width: 1.5),
+                            ),
+                          ),
                           validator: (value) {
                             return value != null
                                 ? RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -114,6 +175,7 @@ class _forgotState extends State<forgot> {
                       isclick?ButtonW100(
                           text: 'Proceed',
                           onTap: () async {
+                            if(_formKey.currentState!.validate()){
                             products.forEach((element) {
                              if( element.username==_EmailController.text){
                                setState(() {
@@ -130,7 +192,7 @@ class _forgotState extends State<forgot> {
                                );
                              }
 
-                          }):_addTile()
+                          }}):_addTile()
                     ])))));
   }
 }

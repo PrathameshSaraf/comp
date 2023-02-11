@@ -1,14 +1,27 @@
+import 'package:comp/Models/Database.dart';
 import 'package:flutter/material.dart';
 
 class CustomerHistory extends StatefulWidget {
+  String customerID;
+  CustomerHistory({required this.customerID});
   @override
   _CustomerHistoryState createState() => _CustomerHistoryState();
 }
 
 class _CustomerHistoryState extends State<CustomerHistory> {
-  String _name = "John Doe";
-  String _gender = "Male";
-  String _mobile = "555-555-5555";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getHisotyData();
+    super.initState();
+  }
+  final db=DatabaseServices();
+
+  getHisotyData(){
+    db.fetchHistoryData('1V78IDr9xJ4XKMuuNID1');
+  }
+
 
 
   @override
@@ -23,14 +36,14 @@ class _CustomerHistoryState extends State<CustomerHistory> {
               child: CircleAvatar(
                 radius: 50,
                 backgroundImage: NetworkImage(
-                    "https://firebasestorage.googleapis.com/v0/b/comp-fe7ff.appspot.com/o/Photos%2Fsdfbg.jpg?alt=media&token=c9553f34-3f7c-4d73-9c48-26feb7ce29d5"),
+                   ""),
               ),
             ),
             SizedBox(
               height: 10,
             ),
             Text(
-              _name,
+            "",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -42,7 +55,7 @@ class _CustomerHistoryState extends State<CustomerHistory> {
               height: 10,
             ),
             Text(
-              _gender,
+              "_gender",
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,
@@ -53,7 +66,7 @@ class _CustomerHistoryState extends State<CustomerHistory> {
               height: 10,
             ),
             Text(
-              _mobile,
+              "_mobile",
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,

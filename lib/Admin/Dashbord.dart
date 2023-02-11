@@ -1,3 +1,4 @@
+import 'package:comp/Pages/settingPage.dart';
 import 'package:flutter/material.dart';
 import '../Pages/AddPhotoPage.dart';
 import '../Pages/CategoriesPage.dart';
@@ -75,7 +76,24 @@ class _DashbordState extends State<Dashbord> {
                             )
                           : widget.val == 5
                               ? CategoriesPage()
-                              : locationPage(),
+                              :  widget.val == 6?locationPage():AlertDialog(
+              content: Stack(
+                children: <Widget>[
+                  Positioned(
+
+                    child: InkResponse(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: CircleAvatar(
+                        child: Icon(Icons.close),
+                        backgroundColor: Colors.red,
+                      ),
+                    ),
+                  ),
+                  SettingsPage()
+                ],
+              )),
           //            AddPhotoPage(Gender: "Male", value: true)
         ])));
   }

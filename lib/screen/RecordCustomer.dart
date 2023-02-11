@@ -7,6 +7,7 @@ import '../Models/StorageServices.dart';
 import '../Models/customer.dart';
 import '../widgets/AppBar.dart';
 import '../widgets/Button.dart';
+import 'package:flutter/services.dart';
 
 String dropdownValue = 'Male';
 String? imageUrl;
@@ -18,6 +19,7 @@ class RecordCostomer extends StatefulWidget {
 }
 
 class _RecordCostomerState extends State<RecordCostomer> {
+
   var items = [
     'Male',
     'Female',
@@ -67,21 +69,44 @@ class _RecordCostomerState extends State<RecordCostomer> {
                     ),
                     TextFormField(
                       controller: _PhoneController,
+
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      maxLength: 10,
+                      keyboardType: TextInputType.numberWithOptions(),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please enter a mobile number';
+                          return "Mobile number is required";
+                        }
+                        RegExp regExp = RegExp(r'^\d{10}$');
+                        if (!regExp.hasMatch(value)) {
+                          return "Enter a valid mobile number";
                         }
                         return null;
                       },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.blue, width: 1.5),
+                          BorderSide(color: Colors.blue, width: 1.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.black, width: 1.5),
+                          BorderSide(color: Colors.black, width: 1.5),
                         ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.red, width: 1.5),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.black, width: 1.5),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.black, width: 1.5),
+                        ),
+
                       ),
                     ),
                     SizedBox(
@@ -110,19 +135,29 @@ class _RecordCostomerState extends State<RecordCostomer> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter some text';
                         }
-
                         return null;
-
                       },
 
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.blue, width: 1.5),
+                          BorderSide(color: Colors.blue, width: 1.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.black, width: 1.5),
+                          BorderSide(color: Colors.black, width: 1.5),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.red, width: 1.5),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.black, width: 1.5),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.black, width: 1.5),
                         ),
                       ),
                     ),
@@ -137,15 +172,26 @@ class _RecordCostomerState extends State<RecordCostomer> {
                     ),
                     DropdownButtonFormField(
                       decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black, width: 2),
-                        ),
                         focusedBorder: OutlineInputBorder(
-                          //<-- SEE HERE
-                          borderSide: BorderSide(color: Colors.black, width: 2),
+                          borderSide:
+                          BorderSide(color: Colors.blue, width: 1.5),
                         ),
-                        filled: true,
-                        //fillColor: Colors.greenAccent,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.black, width: 1.5),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.red, width: 1.5),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.black, width: 1.5),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.black, width: 1.5),
+                        ),
                       ),
                       // dropdownColor: Colors.greenAccent,
                       value: dropdownValue,
@@ -214,11 +260,11 @@ class _RecordCostomerState extends State<RecordCostomer> {
                       height: 30,
                     ),
                     ButtonW100(
-                      text: imagePath!=null?"update":'Proceed',
+                      text: 'Proceed',
                       onTap: () async {
+                        if (_formKey.currentState!.validate()) {
                         if (_NameController.text != '' &&
-                            _PhoneController.text != '' &&
-                            imageUrl == null) {
+                            _PhoneController.text != '' && imageUrl == null) {
                           int firstSpace = _NameController.text
                               .indexOf(" "); // detect the first space character
                           String firstName = _NameController.text.substring(0,
@@ -227,26 +273,14 @@ class _RecordCostomerState extends State<RecordCostomer> {
                               .substring(firstSpace)
                               .trim(); // get everything after the first space, trimming the spaces off
 
-                          imagePath==null?db
-                         .addCostomer(
-                                  '',
-                                  firstName,
-                                  lastName,
-                                  dropdownValue.toString(),
-                                  _PhoneController.text,
-                                  imageUrl.toString(),
-                                  context)
+                           db.addCostomer('', firstName, lastName, dropdownValue.toString(), _PhoneController.text, imageUrl.toString(), context)
                               .then((value) => setState(() {
                                     Cu_id = value;
                                   }))
                               .then((value) {
                             print(imageFile);
-                            storage
-                                .uploadFile(imageFile!,
-                                    DateTime.now().toString(), Cu_id!)
-                                .then((value) => print('done'));
+                            storage.uploadFile(imageFile!,DateTime.now().toString(), Cu_id!).then((value) => print('done'));
                           }).then((value) {
-                            //db.getMData();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -262,28 +296,9 @@ class _RecordCostomerState extends State<RecordCostomer> {
                                 pickedFile = null;
                               });
                             });
-                          }):
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CategoriesData(
-                                        data: dropdownValue.toString(),mobile: Cu_id!,
-                                    ))).then((value) {
-                              _PhoneController.clear();
-                              _NameController.clear();
-                              setState(() {
-                                imageFile = null;
-                                imagePath=null;
-                                dropdownValue = "Male";
-                                pickedFile = null;
-                              });
-                            });
+                          });
 
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content:
-                                  Text("Please Provide Correct Infomation")));
-                        }
+                        } }
                       },
                     )
                   ])),

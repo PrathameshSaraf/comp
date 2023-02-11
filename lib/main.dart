@@ -1,49 +1,50 @@
+import 'package:comp/Admin/Dashbord.dart';
 import 'package:comp/screen/LoginPage.dart';
 import 'package:comp/screen/RecordCustomer.dart';
 import 'package:comp/screen/Signup.dart';
+import 'package:comp/widgets/Button.dart';
 import 'package:flutter/material.dart';
-import 'Admin/addPhotos.dart';
+
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'Admin/adminlogin.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+
+Color? primaryColor;
+String? fontFamily;
+bool? isDarkMode;
+Brightness? brightness;
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options
-        : DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+class _MyAppState extends State<MyApp> {
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      theme:   ThemeData(
+      //primaryColor: primaryColor==null?Colors.red:primaryColor,
+      //fontFamily: fontFamily,
+      brightness:Brightness.light,
+    ),
       routes: {
         "/":(context)=>LoginState(),
         LoginScreen.routeName: (ctx) => LoginScreen(),
         //forgot.routeName:(ctx)=>forgot(),
-
         RecordCostomer.routeName:(ctx)=>RecordCostomer(),
         SignupPage.routeName:(ctx)=>SignupPage(),
         //AddPhotos.routeName: (ctx) =>AddPhotos(),
@@ -53,3 +54,278 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+class SettingsPage extends StatefulWidget {
+
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  String? _logo;
+  @override
+  void initState() {
+    super.initState();
+
+  }
+  //
+  // void _pickLogo() {
+  //   // Create an input element with type 'file' and accept attribute set to 'image/*'
+  //   InputElement input = InputElement();
+  //   input.type = 'file';
+  //   input.accept = 'image/*';
+  //
+  //   input.onChange.listen((e) {
+  //     final files = input.files;
+  //     if (files?.length! == 1) {
+  //       final file = files![0];
+  //       final reader = FileReader();
+  //       reader.onLoadEnd.listen((e) {
+  //         setState(() {
+  //           _logo = reader.result as String;
+  //         });
+  //       });
+  //
+  //       reader.readAsDataUrl(file);
+  //     }
+  //   });
+  //
+  //   input.click();
+  // }
+  //In this example, an InputElement of type "file" is created and its accept attribute is
+
+
+  //
+  // void _changePrimaryColor(Color color) {
+  //   setState(() {
+  //     primaryColor = color;
+  //   });
+  // }
+  //
+  // void _changeFontFamily(String? font) {
+  //   setState(() {
+  //     fontFamily=font;
+  //   });
+  // }
+
+  void _changeMode(bool value) {
+    setState(() {
+      isDarkMode = value;
+    });
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      appBar: AppBar(
+        title: Text('Settings'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: <Widget>[
+            // Container(
+            //   height: 200,
+            //   width: double.infinity,
+            //   child: _logo != null
+            //       ? Image.network(_logo!)
+            //       : Icon(Icons.camera_alt_outlined),
+            // ),
+            // Row(
+            //   children: <Widget>[
+            //     Expanded(
+            //       child: Text('Logo'),
+            //     ),
+            //     IconButton(
+            //       icon: Icon(Icons.image),
+            //       onPressed: _pickLogo,
+            //     ),
+            //   ],
+            // ),
+            //
+            // Row(
+            //   children: <Widget>[
+            //     Expanded(
+            //       child: Text('Primary Color'),
+            //     ),
+            //     ColorPickerButton(
+            //       color: primaryColor!,
+            //       onColorChanged: _changePrimaryColor,
+            //     ),
+            //     Container(
+            //       width: 50.0,
+            //       height: 50.0,
+            //       color: primaryColor!,
+            //     )
+            //   ],
+            // ),
+            // Row(
+            //   children: <Widget>[
+            //     Expanded(
+            //       child: Text('Font Family'),
+            //     ),
+            //     DropdownButton<String>(
+            //       value: fontFamily,
+            //       items: <String>['Arial', 'Helvetica', 'Times New Roman']
+            //           .map((String value) {
+            //         return DropdownMenuItem<String>(
+            //           value: value,
+            //           child: Text(value),
+            //         );
+            //       }).toList(),
+            //       onChanged: _changeFontFamily,
+            //     ),
+            //   ],
+            // ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text('Dark Mode'),
+                ),
+                Switch(
+                  value: isDarkMode!,
+                  onChanged: _changeMode,
+                ),
+              ],
+            ),
+
+            ButtonW100(text: "Save", onTap: (){
+              setState(() {
+
+              });
+            })],
+        ),
+      ),
+    );
+  }
+}
+
+class ColorPickerButton extends StatelessWidget {
+  final Color color;
+  final ValueChanged<Color> onColorChanged;
+
+  ColorPickerButton({
+    Key? key,
+    required this.color,
+    required this.onColorChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.color_lens),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Pick color'),
+              content: SingleChildScrollView(
+                child: ColorPicker(
+                  pickerColor: color,
+                  onColorChanged: onColorChanged,
+                  // enableLabel: true,
+                  pickerAreaHeightPercent: 0.8,
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Save'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+//
+// class SettingsPage1 extends StatefulWidget {
+//   @override
+//   _SettingsPageState1 createState() => _SettingsPageState1();
+// }
+//
+// class _SettingsPageState1 extends State<SettingsPage1> {
+//   Color _primaryColor = Colors.blue;
+//   String _fontFamily = 'MyFont';
+//   Brightness _brightness = Brightness.light;
+//   Image? _logo;
+//
+//   void _updatePrimaryColor(Color color) {
+//     setState(() {
+//       _primaryColor = color;
+//     });
+//   }
+//
+//   void _updateFontFamily(String fontFamily) {
+//     setState(() {
+//       _fontFamily = fontFamily;
+//     });
+//   }
+//
+//   void _updateBrightness(Brightness brightness) {
+//     setState(() {
+//       _brightness = brightness;
+//     });
+//   }
+//
+//   void _updateLogo(Image logo) {
+//     setState(() {
+//       _logo = logo;
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Settings'),
+//       ),
+//       body: Container(
+//         child: Column(
+//           children: <Widget>[
+//             ListTile(
+//               title: Text('Primary Color'),
+//               trailing: Container(
+//                 width: 50.0,
+//                 height: 50.0,
+//                 color: _primaryColor,
+//               ),
+//               onTap: () {
+//                 // Show a color picker and update the primary color when the user selects a new color
+//               },
+//             ),
+//             ListTile(
+//               title: Text('Font Family'),
+//               trailing: Text(_fontFamily),
+//               onTap: () {
+//                 // Show a list of available font families and update the font family when the user selects a new font
+//               },
+//             ),
+//             ListTile(
+//               title: Text('Brightness'),
+//               trailing: _brightness == Brightness.light ? Text('Light') : Text('Dark'),
+//               onTap: () {
+//                 // Show a toggle to switch between light and dark brightness and update the brightness when the user changes the toggle
+//               },
+//             ),
+//             ListTile(
+//               title: Text('Logo'),
+//               trailing: _logo,
+//               onTap: () {
+//                 // Show an image picker and update the logo when the user selects a new image
+//               },
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

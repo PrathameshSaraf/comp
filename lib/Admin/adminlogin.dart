@@ -1,8 +1,4 @@
-import 'package:comp/Pages/settingPage.dart';
 import 'package:flutter/material.dart';
-
-import '../screen/lastPage.dart';
-import '../screen/setting.dart';
 import '../widgets/Button.dart';
 import 'Dashbord.dart';
 
@@ -148,7 +144,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: () => {
                                 if (!_formKey.currentState!.validate())
                                   {
-
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text("Unable to Login")))

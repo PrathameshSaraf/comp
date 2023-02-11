@@ -41,7 +41,7 @@ getProducts() async {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>CustomerHistory(),
+                      builder: (context) =>CustomerHistory(customerID: widget.mobile,),
                     ));
               },
             ),]
@@ -49,18 +49,15 @@ getProducts() async {
         body:  SafeArea(
             child: SingleChildScrollView(
             child:Padding(
-
                     padding: EdgeInsets.symmetric(horizontal: 10,vertical:10),
                     child:
                      Column(
                   children: [
-
                     GridView.builder(
                         physics: ScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: products.length,
-                        gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount:2 ,
                              crossAxisSpacing: 1.0,
                              mainAxisSpacing: 1.0
