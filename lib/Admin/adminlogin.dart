@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         : "Enter valid email"
                                     : "Enter email";
                               },
-                              decoration: am.getInputDecoration("Username"),
+                              decoration: am.getInputDecoration(),
                             ),
                             const SizedBox(
                               height: 20.0,
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     : "Enter Password";
                               },
                               obscureText: true,
-                              decoration: am.getInputDecoration("Password"),
+                              decoration: am.getInputDecoration(),
                             ),
                             const SizedBox(
                               height: 20.0,

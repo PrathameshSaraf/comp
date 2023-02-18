@@ -27,7 +27,7 @@ class Storage {
     var imageExists = await storageReference.getMetadata().then((metadata) => true, onError: (error) => false);
     // If the image exists, delete it
     if (imageExists) {
-      await storageReference.delete().then((value) => print("sucess"));
+      await storageReference.delete().then((value) => print("sucess11"));
     }
      }
   // Future<void> deletePhoto(String photoId, String folder) async {
@@ -36,7 +36,11 @@ class Storage {
   //   print('sucess');
   // }
 //========================================Customer=============================================================
-  Future<void> uploadFile(File file, String fileName, String id) async {
+  Future<void> uploadFile(File file, String id) async {
+    String fileName =file!
+        .path
+        .split('/')
+        .last;
     String url1='';
     try {
       await storage.ref('customers/$fileName' + ".jpg").putFile(file).then(

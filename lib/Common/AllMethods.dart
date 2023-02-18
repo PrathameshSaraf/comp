@@ -39,9 +39,9 @@ class allMethods{
   }
 
 
-  InputDecoration getInputDecoration(String label) {
+  InputDecoration getInputDecoration() {
     return InputDecoration(
-      labelText: label,
+
       focusedBorder: OutlineInputBorder(
         borderSide:
         BorderSide(color: Colors.blue, width: 1.5),

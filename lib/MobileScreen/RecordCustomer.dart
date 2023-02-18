@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:comp/Common/AllMethods.dart';
+import 'package:comp/MobileScreen/ABPhtoclick.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/Database.dart';
@@ -21,13 +23,14 @@ class RecordCostomer extends StatefulWidget {
 }
 
 class _RecordCostomerState extends State<RecordCostomer> {
-
+  final am=allMethods();
   var items = [
     'Male',
     'Female',
   ];
+  bool flag=false;
   final db = DatabaseServices();
-  String? Cu_id;
+  String Cu_id='';
   PickedFile? pickedFile;
   File? imageFile;
   final _formKey = GlobalKey<FormState>();
@@ -123,15 +126,19 @@ class _RecordCostomerState extends State<RecordCostomer> {
                     TextFormField(
                       controller: _NameController,
                       onTap: (){
+                        if(flag==false){
                         db.getDataFromMobile(_PhoneController.text).then((value) {
                           _NameController.text = value.single.fname + " " + value.single.lname;
+                          Cu_id=value.single.id;
                           setState(() {
+                            flag=true;
+
                             dropdownValue=value.single.Gender;
                             imagePath=value.single.ImagePath;
                           });
                          // print(value.single.ImagePath);
                         }
-                        );
+                        );}
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -140,28 +147,7 @@ class _RecordCostomerState extends State<RecordCostomer> {
                         return null;
                       },
 
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.blue, width: 1.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.red, width: 1.5),
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                      ),
+                      decoration: am.getInputDecoration()
                     ),
                     SizedBox(
                       height: 20,
@@ -173,33 +159,12 @@ class _RecordCostomerState extends State<RecordCostomer> {
                       alignment: Alignment.centerLeft,
                     ),
                     DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.blue, width: 1.5),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.red, width: 1.5),
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                      ),
+                      decoration:am.getInputDecoration(),
                       // dropdownColor: Colors.greenAccent,
                       value: dropdownValue,
                       onChanged: (String? newValue) {
                         setState(() {
-                          print(imagePath);
+
                           dropdownValue = newValue!;
                         });
                       },
@@ -219,11 +184,15 @@ class _RecordCostomerState extends State<RecordCostomer> {
                     ),
                     GestureDetector(
                       onTap: () async {
+
                         PickedFile? pickedFile = await ImagePicker().getImage(
                           source: ImageSource.camera,
                           maxWidth: 1800,
                           maxHeight: 1800,
                         );
+                        setState(() {
+                          imagePath=null;
+                        });
                         if (pickedFile != null) {
                           imageFile = File(pickedFile.path);
                           setState(() {
@@ -261,12 +230,11 @@ class _RecordCostomerState extends State<RecordCostomer> {
                     SizedBox(
                       height: 30,
                     ),
-                    ButtonW100(
+                     imagePath==null && (Cu_id==null || Cu_id=="")?ButtonW100(
                       text: 'Proceed',
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
-                        if (_NameController.text != '' &&
-                            _PhoneController.text != '' && imageUrl == null) {
+                        if (_NameController.text != '' && _PhoneController.text != '' && imageUrl == null){
                           int firstSpace = _NameController.text
                               .indexOf(" "); // detect the first space character
                           String firstName = _NameController.text.substring(0,
@@ -280,29 +248,56 @@ class _RecordCostomerState extends State<RecordCostomer> {
                                     Cu_id = value;
                                   }))
                               .then((value) {
-                            print(imageFile);
-                            storage.uploadFile(imageFile!,DateTime.now().toString(), Cu_id!).then((value) => print('done'));
+                            storage.uploadFile(imageFile!, Cu_id!).then((value) => print('done'));
                           }).then((value) {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CategoriesData(
-                                          data: dropdownValue.toString(),mobile: Cu_id!,
-                                        ))).then((value) {
-                              _PhoneController.clear();
-                              _NameController.clear();
-                              setState(() {
-                                imageFile = null;
-                                imagePath=null;
-                                dropdownValue = "Male";
-                                pickedFile = null;
+                                context,MaterialPageRoute( builder: (context) => CategoriesData(
+                                  data: dropdownValue.toString(),mobile: Cu_id!,))).then((value)
+                            {
+                            _PhoneController.clear();
+                            _NameController.clear();
+                            setState(() {
+                              imageFile = null;
+                              flag=false;
+                              imagePath=null;
+                              dropdownValue = "Male";
+                              pickedFile = null;
+                              Cu_id="";
                               });
                             });
                           });
-
                         } }
                       },
                     )
+                         :ButtonW100(text: 'Save', onTap:(){
+                 db.getDataFromMobile(_PhoneController.text).then((value) {
+
+                         if( _NameController.text != value.single.fname + " " + value.single.lname || dropdownValue!=value.single.Gender ||imagePath!=value.single.ImagePath || imageFile!=null){
+                           db.UpdateCostomer(value.single.id,_NameController.text,dropdownValue,_PhoneController.text,context);
+
+                       if(value.single.ImagePath==null && imageFile!=null){
+                           storage.deleteImage(value.single!.ImagePath, 'customers');
+                           storage.uploadFile(imageFile!,value.single.id);
+                       }
+                  } }).then((value) {
+                      print("$Cu_id hello");
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => CategoriesData(
+                        data: dropdownValue.toString(),mobile: Cu_id!,
+                        ))).then((value) {
+                        _PhoneController.clear();
+                        _NameController.clear();
+                        setState(() {
+                          flag=false;
+                          Cu_id="";
+                        imageFile = null;
+                        imagePath=null;
+                        dropdownValue = "Male";
+                        pickedFile = null;
+                        });
+                    });});})
                   ])),
             ),
           ),

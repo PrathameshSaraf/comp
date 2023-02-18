@@ -74,11 +74,22 @@ class _SuccessPageState extends State<SuccessPage> with TickerProviderStateMixin
                   ),
                   SizedBox(height: 200,),
                   ButtonW100(text: "Back To Home", onTap: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>RecordCostomer(),
-                        ));
+                    // Navigator.pushAndRemoveUntil(
+                    //     context,
+                    //     MaterialPageRoute(builder: (context) =>RecordCostomer()),
+                    //       (route) => true,
+                    //     );
+                    String initialRouteName = '/';
+
+                    // Check if the initial route already exists on the stack
+                    bool isInitialRouteOnStack = false;
+                    Navigator.popUntil(context, (route) {
+                      if (route.settings.name == initialRouteName) {
+                        isInitialRouteOnStack = true;
+                        return true;
+                      }
+                      return false;
+                    });
                   })
                 ],
         ),

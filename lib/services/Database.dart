@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comp/Models/location.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +9,11 @@ import '../Models/Categories.dart';
 import '../Models/Clients.dart';
 import '../Models/Photos.dart';
 import '../Models/customer.dart';
+import 'StorageServices.dart';
 
 class DatabaseServices {
   final _db = FirebaseFirestore.instance;
+
 
 
 //=================================Customer===============================================================
@@ -35,7 +35,6 @@ class DatabaseServices {
         print(e);
       });
       await _db.collection("custmer").doc(ref.id).update({"id": ref.id});
-
       return ref.id;
     } catch (e) {
       ScaffoldMessenger.of(context)
@@ -69,14 +68,11 @@ class DatabaseServices {
   }
 
   Future<List> getDataFromMobile(String mobileNumber) async {
-    print(mobileNumber);
     List dataList = [];
-
     QuerySnapshot snapshots =await _db
         .collection('custmer')
         .where('phno', isEqualTo: mobileNumber)
         .get();
-
     for (QueryDocumentSnapshot snap in snapshots.docs) {
       dataList.add(Customer(
         Gender: snap["Gender"],
@@ -92,19 +88,24 @@ class DatabaseServices {
     return dataList;
   }
 
-  UpdateCostomer(String id, String Name, String Gender, String phno,String image,
-      BuildContext context) async {
-    //final categoryData = Customer(id:id,name:Name,Gender: Gender,phno: phno);
+  Future<void> UpdateCostomer(String id, String Name, String Gender, String phno, BuildContext context) async {
+    int firstSpace = Name.indexOf(" ");
+    String firstName = Name.substring(0,firstSpace); // get everything upto the first space character
+    String lastName = Name.substring(firstSpace).trim();
     try {
+       print(id);
       await _db.collection("custmer").doc(id).update({
         "Gender": Gender,
-        "name": Name,
+        "fname": firstName,
+        "lname":lastName,
         "phno": phno,
+        "lastVi":DateTime.now(),
       });
+
     } catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Unable to update data $e")));
-      return "";
+      return;
     }
   }
 
