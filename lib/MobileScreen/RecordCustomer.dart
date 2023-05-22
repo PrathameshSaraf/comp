@@ -132,7 +132,6 @@ class _RecordCostomerState extends State<RecordCostomer> {
                           Cu_id=value.single.id;
                           setState(() {
                             flag=true;
-
                             dropdownValue=value.single.Gender;
                             imagePath=value.single.ImagePath;
                           });

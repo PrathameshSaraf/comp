@@ -77,7 +77,8 @@ class _DashbordState extends State<Dashbord> {
                             )
                           : widget.val == 5
                               ? CategoriesPage()
-                              :  widget.val == 6?locationPage():AlertDialog(
+                              :  widget.val == 6?locationPage():
+          AlertDialog(
               content: Stack(
                 children: <Widget>[
                   Positioned(
@@ -92,10 +93,10 @@ class _DashbordState extends State<Dashbord> {
                       ),
                     ),
                   ),
-                  SettingsPage()
+
                 ],
               )),
-          //            AddPhotoPage(Gender: "Male", value: true)
+
         ])));
   }
 }

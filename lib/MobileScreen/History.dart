@@ -7,9 +7,11 @@ class CustomerHistory extends StatefulWidget {
   @override
   _CustomerHistoryState createState() => _CustomerHistoryState();
 }
-
+String? name,gender,mobile,imagepath;
 class _CustomerHistoryState extends State<CustomerHistory> {
+   List HistoryData=[];
 
+   bool _isloading = true;
   @override
   void initState() {
     // TODO: implement initState
@@ -18,32 +20,64 @@ class _CustomerHistoryState extends State<CustomerHistory> {
   }
   final db=DatabaseServices();
 
-  getHisotyData(){
-    db.fetchHistoryData('1V78IDr9xJ4XKMuuNID1');
+  getHisotyData()async{
+  final value= await db.fetchHistoryData(widget.customerID);
+  HistoryData=value;
+  setState(() {
+  });
+  final Map<String, dynamic> doc= await db.getSingleValueCustomer(widget.customerID);
+  print(doc);
+    setState(() {
+      name= doc['fname'] + " " + doc["lname"];
+      gender=doc['Gender'];
+      mobile=doc['phno'];
+      imagepath=doc["ImagePath"];
+    });
   }
 
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    print(widget.customerID);
+    if (HistoryData.length > 0 && name!=null) {
+      setState(() {
+        _isloading = false;
+      });
+    }
+    return  Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
+      body: _isloading ? const Center(
+        child: CircularProgressIndicator(),
+      ):SafeArea(
         child: Column(
           children: <Widget>[
             Container(
               margin: EdgeInsets.all(10),
-              child: CircleAvatar(
+              child: imagepath!=null?CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage(
-                   ""),
+                backgroundImage: NetworkImage(imagepath!),
+              ):Container(
+                decoration: BoxDecoration(color: Colors.white,shape: BoxShape.circle,border: Border.all(
+                  color: Colors.blue,
+                  width: 2,
+                ),),
+                margin: EdgeInsets.only(top: 30),
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  child: Icon(
+                    size: 60.0,
+                    Icons.camera_alt,
+                    color: Colors.grey[800],
+                  ),
+                ),
               ),
             ),
             SizedBox(
               height: 10,
             ),
             Text(
-            "",
+            "Name - ${name!}",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -55,7 +89,7 @@ class _CustomerHistoryState extends State<CustomerHistory> {
               height: 10,
             ),
             Text(
-              "_gender",
+              "Gender - ${gender!}",
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,
@@ -66,7 +100,7 @@ class _CustomerHistoryState extends State<CustomerHistory> {
               height: 10,
             ),
             Text(
-              "_mobile",
+             "Mobile No. - ${mobile!}",
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,
@@ -94,16 +128,29 @@ class _CustomerHistoryState extends State<CustomerHistory> {
                       ),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: 6,
+                          itemCount: HistoryData.length,
                           itemBuilder: (context, index) {
                             return Card(
                               child: ListTile(
-                                leading: Image.network(
-                                    "https://firebasestorage.googleapis.com/v0/b/comp-fe7ff.appspot.com/o/Photos%2Fsdfbg.jpg?alt=media&token=c9553f34-3f7c-4d73-9c48-26feb7ce29d5"),
-                                title:   Text("12-02-2023"),subtitle: Text("sdfghb hgtfnjhn hjyb jhb njhb jnhb mjnbh mknjbh nknjbh jnbh nmjnbh nmkjb mnjb mkmnjb jb nv nhgtfvc bhgfdcmmmmmmmmmmmmmmmmmmnjjjjjjjjjjjjjknkkkkkkkkkkkj hbbbbbb"),
+                                leading: HistoryData[index]['Aimage']!=null ||HistoryData[index]['Aimage']==''?Image.network( HistoryData[index]['Aimage']):Container(
+                                  decoration: BoxDecoration(color: Colors.white),
+                                  child: Icon(
+                                    size: 100.0,
+                                    Icons.camera_alt,
+                                    color: Colors.grey[800],
+                                  ),
+                                ),
+                                subtitle:Text("Date - ${(DateTime.fromMicrosecondsSinceEpoch((int.parse(HistoryData[index]['Date'].toString().split("=")[1].split(",")[0]) ?? 0 )* 1000000)).toLocal().toString().split(' ')[0]}"),
+                                title: Text("Service - ${HistoryData[index]['Service']}"),
 
-                              trailing: Image.network(
-                                     "https://firebasestorage.googleapis.com/v0/b/comp-fe7ff.appspot.com/o/Photos%2Fsdfbg.jpg?alt=media&token=c9553f34-3f7c-4d73-9c48-26feb7ce29d5"),
+                              trailing: HistoryData[index]['Bimage']!=null||HistoryData[index]['Bimage']==""?Image.network(HistoryData[index]['Bimage']):Container(
+                                decoration: BoxDecoration(color: Colors.white),
+                                child: Icon(
+                                  size: 30.0,
+                                  Icons.camera_alt,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
 
                               ),
                             );

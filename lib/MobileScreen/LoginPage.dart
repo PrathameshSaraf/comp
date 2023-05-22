@@ -1,9 +1,12 @@
+import 'package:comp/Common/AllMethods.dart';
 import 'package:flutter/material.dart';
 import '../Admin/adminlogin.dart';
 import '../Models/Clients.dart';
 import '../services/Database.dart';
 import '../widgets/Button.dart';
+import 'package:get/get.dart';
 import '../widgets/TextEditor.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'RecordCustomer.dart';
 import 'Signup.dart';
 import 'forgatePage.dart';
@@ -218,14 +221,13 @@ class _LoginState extends State<LoginState> {
                       height: 30,
                     ),
                     ButtonW100(text: 'Login', onTap: (){
-                      if(_formKey.currentState!.validate()){
-                      loginUser(_PhoneController.text,_PassController.text);}
-                      else{
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Username And Password Wrong."),
-                            ));
-                      }
+
+                      Get.showSnackbar(allMethods.SuccessSnackBar(message: 'hell'));
+                      // if(_formKey.currentState!.validate()){
+                      // loginUser(_PhoneController.text,_PassController.text);}
+                      // else{
+                      //
+                      // }
                     }),
                     SizedBox(
                       height: 50,

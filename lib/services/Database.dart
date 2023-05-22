@@ -9,8 +9,7 @@ import '../Models/Categories.dart';
 import '../Models/Clients.dart';
 import '../Models/Photos.dart';
 import '../Models/customer.dart';
-import 'StorageServices.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 class DatabaseServices {
   final _db = FirebaseFirestore.instance;
 
@@ -46,7 +45,6 @@ class DatabaseServices {
   Future<String> addDataForCustomerByMobileNumber(String mobileNumber, Map<String, dynamic> data) async {
     try {
       DocumentReference ref= await _db.collection("custmer").doc(mobileNumber).collection(mobileNumber).add(data);
-      print(ref.id);
       return ref.id;
     }catch(e){
       print(e);
@@ -56,15 +54,39 @@ class DatabaseServices {
 
   Future<List> fetchHistoryData(String mobileNumber) async {
     List dataList = [];
+
     QuerySnapshot<Object> snapshot = await _db.collection("custmer").doc(mobileNumber).collection(mobileNumber).get();
+    print(snapshot.docs);
     for (QueryDocumentSnapshot snap in snapshot.docs) {
+
       dataList.add(
         {
-
+          "Aimage":snap["Aimage"],
+          "Bimage":snap["Bimage"],
+          "Date":snap["Date"],
+          "Description":snap["Description"],
+          "Service":snap["Service"],
         }
       );
     }
+    print(dataList);
     return dataList;
+  }
+
+  Future<Map<String, dynamic>>  getSingleValueCustomer(String userId) async{
+    Map<String, dynamic>? doc;
+    CollectionReference ref = FirebaseFirestore.instance.collection('custmer');
+    await ref.doc(userId).get().then((DocumentSnapshot documentSnapshot) {
+
+      if (documentSnapshot.exists) {
+       doc= documentSnapshot.data() as Map<String, dynamic>;
+        print('Document exists on the database');
+      }
+      else{
+
+      }
+    });
+    return doc!;
   }
 
   Future<List> getDataFromMobile(String mobileNumber) async {
